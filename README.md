@@ -8,3 +8,4 @@ A place designated to sharing, collaborating on, and saving code for the Blackfi
   
 **Libraries**
 - [Wireless Tranciever](https://github.com/sparkfun/RFM69HCW_Breakout)
+- [Tinker Controller](https://github.com/nathanRamaNoodles/Tinker-Controller)
