@@ -9,3 +9,5 @@ A place designated to sharing, collaborating on, and saving code for the Blackfi
 **Libraries**
 - [Wireless Tranciever](https://github.com/sparkfun/RFM69HCW_Breakout)
 - [Tinker Controller](https://github.com/nathanRamaNoodles/Tinker-Controller)
+- [USB Host Shield 2.0](https://github.com/felis/USB_Host_Shield_2.0)
+  - Supports xbox, play station
