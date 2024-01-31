@@ -1,7 +1,9 @@
 //LIBRARIES
 #include <XBOXONE.h>
 #include <SPI.h>
-#include "controlsMap.h"
+
+#include <burtLib.h>
+#include <controller.h>
 
 //OBJECTS
 
@@ -34,7 +36,9 @@ void loop() {
     }
 
     if (forward()) {
+      const MOVEVALUE = forward();
       Serial.print("choo choo  ");
+      
       Serial.println(Xbox.getAnalogHat(MAP_STRAFE));
     }
 
