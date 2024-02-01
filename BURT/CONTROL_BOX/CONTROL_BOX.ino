@@ -1,9 +1,12 @@
 //LIBRARIES
-#include <XBOXONE.h>
 #include <SPI.h>
+#include <XBOXONE.h>
+#include <Servo.h>
 
 #include <burtLib.h>
 #include <controller.h>
+#include <motors.h>
+
 
 //OBJECTS
 
@@ -11,10 +14,30 @@
 USB Usb;
 XBOXONE Xbox(&Usb);
 
+//Thrusters (which are basically servo motors, hence the Servo.h lib)
+Servo vertFrontServo; // up/down front thruster
+Servo vertBackServo;  // up/down back thruster
+Servo frontLeftServo;
+Servo frontRightServo;
+Servo backLeftServo;
+Servo backRightServo;
+
+
+
+
 void setup() {
   Serial.begin(115200);
+
+  //controller setup
   setupController();
 
+  //motor setup
+  vertFrontServo.attach(VERT_FRONT_SP); // better way to do this??
+  vertBackServo.attach(VERT_BACK_SP);
+  frontLeftServo.attach(FRONT_LEFT_SP);
+  frontRightServo.attach(FRONT_RIGHT_SP);
+  backLeftServo.attach(BACK_LEFT_SP);
+  backRightServo.attach(BACK_RIGHT_SP);
 }
 
 

@@ -2,6 +2,8 @@
 #define burtLib_h
 
 #include "Arduino.h"
+#include "pinsMap.h"
+
 
 bool withinTol(bool value, int tolerance);
 bool outofTol(bool value, int tolerance);
