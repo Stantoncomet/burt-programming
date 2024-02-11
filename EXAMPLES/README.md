@@ -9,7 +9,7 @@ Examples `wireless_tx` and `wireless_rx`, respectively.
 
 **Required Libraries**
 - [RadioHead](https://www.airspayce.com/mikem/arduino/RadioHead/)
-  - [SPIFlash_LowPowerLab](https://github.com/LowPowerLab/SPIFlash)
+  - Dependacy: [SPIFlash_LowPowerLab](https://github.com/LowPowerLab/SPIFlash)
 
 **Reference Links**
 - [Adafruit Hookup Guide](https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/arduino-wiring)
@@ -27,17 +27,17 @@ To can wirelessly communicate between arduinos using RFM69WCH transcievers, you 
 ![image](https://github.com/Stantoncomet/burt-programming/assets/96146851/26187de8-2eea-44db-a53a-5d178eb8dcbb)
 
 The aqua jumper wire on the right is the antena, you (hopefully) have real wire. All connetions are necessary and must be wired properly for the radios to work. From the Adafruit hookup guide:
- - **Vin** connects to the Arduino **5V** pin. If you're using a 3.3V Arduino, connect to nessiscary
- - **GND** connects to Arduino ground
- - **SCLK** connects to SPI clock. On Arduino Uno/Duemilanove/328-based, thats **Digital 13**. On Mega's, its **Digital 52** and on Leonardo/Due its **ICSP-3 **
- - **MISO** connects to SPI MISO. On Arduino Uno/Duemilanove/328-based, thats **Digital 12**. On Mega's, its **Digital 50** and on Leonardo/Due its **ICSP-1**
- - **MOSI** connects to SPI MOSI. On Arduino Uno/Duemilanove/328-based, thats **Digital 11**. On Mega's, its **Digital 51** and on Leonardo/Due its **ICSP-4**
- - **CS** connects to our SPI Chip Select pin. We'll be using **Digital 4** but you can later change this to any pin
+ - **Vin** connects to the Arduino **5V** pin. If you're using a 3.3V Arduino, connect to **3.3V**.
+ - **GND** connects to Arduino ground.
+ - **SCLK** connects to SPI clock. On Arduino Uno/Duemilanove/328-based, thats **Digital 13**. On Mega's, its **Digital 52** and on Leonardo/Due its **ICSP-3**.
+ - **MISO** connects to SPI MISO. On Arduino Uno/Duemilanove/328-based, thats **Digital 12**. On Mega's, its **Digital 50** and on Leonardo/Due its **ICSP-1**.
+ - **MOSI** connects to SPI MOSI. On Arduino Uno/Duemilanove/328-based, thats **Digital 11**. On Mega's, its **Digital 51** and on Leonardo/Due its **ICSP-4**.
+ - **CS** connects to our SPI Chip Select pin. We'll be using **Digital 4** but you can later change this to any pin.
  - **RST** connects to our radio reset pin. We'll be using **Digital 2** but you can later change this pin too.
  - **G0 (IRQ)** connects to an interrupt-capable pin. We'll be using **Digital 3** but you can later change this pin too. However, it must connect a hardware Interrupt pin.
 
 ### Running the Code
-On a computer, boot up the two example in the Arduino IDE, and plug one of the arduinos in. Select that arduino in the `wireless_tx` window's port menu, and note that window. This will be the transmitting radio.
+On a computer, boot up the two examples in the Arduino IDE, and plug one of the arduinos in. Select that arduino in the `wireless_tx` window's port menu, and note that window. This will be the transmitting radio.
 
 ![image](https://github.com/Stantoncomet/burt-programming/assets/96146851/4863e985-73e8-4c41-b30c-2b806884eaa2)
 
@@ -45,4 +45,4 @@ Now connect the other arduino and select that one on the `wireless_rx` window's 
 
 ![image](https://github.com/Stantoncomet/burt-programming/assets/96146851/58e26214-f854-4c3c-9ef7-f55c7d5f70b3)
 
-Upload both programs and enjoy! For a bonus project, try to understand everything you just did!
+Upload both programs and enjoy! Adjust the example code as needed.
