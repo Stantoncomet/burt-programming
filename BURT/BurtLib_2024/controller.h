@@ -7,6 +7,7 @@
 #define XYTOLERANCE    26000   // Range to accept foward/backward movement vs side-to-side
 
 void setupController();
+void controllerRoutine();
 
 bool forward();
 
