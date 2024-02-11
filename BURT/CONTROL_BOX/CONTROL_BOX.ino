@@ -1,65 +1,70 @@
-#include <RFM69.h>
+//LIBRARIES
 #include <SPI.h>
+#include <XBOXONE.h>
+#include <Servo.h>
 
-RFM69 radio;
-//comment!
-const int DOWNBUTTONPIN = 9;
+#include <burtLib.h>
+#include <controller.h>
+#include <motors.h>
 
-int buttonState;
-int lastButtonState = LOW; 
 
-unsigned long lastDebounceTime = 0;
-unsigned long debounceDelay = 50; 
+//OBJECTS
+
+//Xbox Controller
+USB Usb;
+XBOXONE Xbox(&Usb);
+
+//Thrusters (which are basically servo motors, hence the Servo.h lib)
+Servo vertFrontServo; // up/down front thruster
+Servo vertBackServo;  // up/down back thruster
+Servo frontLeftServo;
+Servo frontRightServo;
+Servo backLeftServo;
+Servo backRightServo;
+
 
 
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
-  pinMode(DOWNBUTTONPIN, INPUT);
+  //controller setup
+  setupController();
 
-  radio.initialize(RF69_915MHZ, 3, 0);
-  radio.setHighPower();
+  //motor setup
+  vertFrontServo.attach(VERT_FRONT_SP); // better way to do this??
+  vertBackServo.attach(VERT_BACK_SP);
+  frontLeftServo.attach(FRONT_LEFT_SP);
+  frontRightServo.attach(FRONT_RIGHT_SP);
+  backLeftServo.attach(BACK_LEFT_SP);
+  backRightServo.attach(BACK_RIGHT_SP);
 }
 
 
 void loop() {
-  if (radio.receiveDone()) {
-    static char time_team[16];
+  //CONTROLLER
+  Usb.Task();
 
-    for (byte i = 0; i < radio.DATALEN; i++)
-      strcat(time_team, (char)radio.DATA[i]);
-    
-    write_to_monitor(time_team);
-  }
+  if (Xbox.XboxOneConnected) {
 
-  //sends "1" to the controlbox if the button is pressed
-  if (digitalRead(DOWNBUTTONPIN)) {
-
-  }
-
-
-  int reading = digitalRead(DOWNBUTTONPIN);
-
-  if (reading != lastButtonState) {
-    lastDebounceTime = millis(); // reset the debouncing timer
-  }
-
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    // if the button state has changed:
-    if (reading != buttonState) {
-      buttonState = reading;
-
-      if (buttonState == HIGH) {
-        //should work, sends a signal if buttonstate is high
-        radio.send(1, "1", 1);
-        Serial.println("sent signal 1");
-      }
+    //MOVEMENT
+    if (Xbox.getButtonPress(MAP_RISE)) {
+      //go up
+      Serial.println("upping");
     }
+
+    if (Xbox.getButtonPress(MAP_FALL)) {
+      //go down
+      Serial.println("downing");
+    }
+
+    if (forward()) {
+      const MOVEVALUE = forward();
+      Serial.print("choo choo  ");
+      
+      Serial.println(Xbox.getAnalogHat(MAP_STRAFE));
+    }
+
+    delay(1); //REPLACE WITH NOT THIS
   }
-}
-
-
-void write_to_monitor(char* monitor_string) {
-  Serial.print(monitor_string); //print(), not println()
 }
