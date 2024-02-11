@@ -8,7 +8,7 @@ Current examples are:
 Examples `wireless_tx` and `wireless_rx`, respectively.
 
 **Required Libraries**
-- [RadioHead](https://www.airspayce.com/mikem/arduino/RadioHead/)
+- [RadioHead](https://github.com/adafruit/RadioHead)
   - Dependacy: [SPIFlash_LowPowerLab](https://github.com/LowPowerLab/SPIFlash)
 
 **Reference Links**
