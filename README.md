@@ -13,8 +13,10 @@ To use the library containing almost all of our code, you must copy the entire `
 - Implement motor limiting
 
 - Write doc on how to use BurtLib_2024
+
 **Doing**
 - Add proper controller deadbands and tollerances
+
 **Finished**
 - Tollerances actually work now
 - BONUS! Controller works without batteries now (hoping it fixes various connection issues)
