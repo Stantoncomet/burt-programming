@@ -1,6 +1,25 @@
 # Burt Programming
 A place designated to sharing, collaborating on, and saving code for the Blackfish Underwater Robotics Team at the Port Townsend Highschool.
 
+## Using BurtLib_2024
+To use the library containing almost all of our code, you must copy the entire `BurtLib_2024` folder you downloaded into your `Arduino/libraries/` folder!! It will not work any other way to my knowledge. If you have made it work a different way, please let me know!
+
+## Progress
+**Todo**
+- Send data between Arduinos
+- Send correct data
+- Send data over long distance using chip thing
+
+- Implement motor limiting
+
+- Write doc on how to use BurtLib_2024
+**Doing**
+- Add proper controller deadbands and tollerances
+**Finished**
+- Tollerances actually work now
+- BONUS! Controller works without batteries now (hoping it fixes various connection issues)
+- Get BurtLib_2024 working right
+- Get controller working with library system
 
 ## Thruster Info
 - [Servo Library](https://www.arduino.cc/reference/en/libraries/servo/)
