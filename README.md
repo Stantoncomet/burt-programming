@@ -9,9 +9,7 @@ To use the library containing almost all of our code, you must copy the entire `
 - Send data between Arduinos
 - Send correct data
 - Send data over long distance using chip thing
-
 - Implement motor limiting
-
 - Write doc on how to use BurtLib_2024
 
 **Doing**
