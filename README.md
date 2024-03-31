@@ -13,6 +13,7 @@ To use the library containing almost all of our code, you must copy the entire `
 **Doing**
 - Send correct data
 - Send data over long distance using chip thing
+
 **Finished**
 - Send data between Arduinos
 - Add proper controller deadbands and tollerances
