@@ -18,3 +18,9 @@ float mapValue(int value, int fromMin, int fromMax, int toMin, int toMax) {
     float mappedValue = (value * (toMax - toMin)) / (fromMax - fromMin) + toMin;
     return mappedValue;
 }
+
+float capValue(float value, float max) {
+    if (value > max) value = max;
+    if (value < -max) value = -max;
+    return value;
+}

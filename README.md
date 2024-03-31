@@ -6,22 +6,23 @@ To use the library containing almost all of our code, you must copy the entire `
 
 ## Progress
 **Todo**
-- Send data between Arduinos
-- Send correct data
-- Send data over long distance using chip thing
 - Implement motor limiting
+
 - Write doc on how to use BurtLib_2024
 
 **Doing**
-- Add proper controller deadbands and tollerances
-
+- Send correct data
+- Send data over long distance using chip thing
 **Finished**
+- Send data between Arduinos
+- Add proper controller deadbands and tollerances
 - Tollerances actually work now
 - BONUS! Controller works without batteries now (hoping it fixes various connection issues)
 - Get BurtLib_2024 working right
 - Get controller working with library system
 
 ## Thruster Info
+For power and complexity reasons, for now we are not implementing any sort of angled movement. ROV can drive straight in any of six directions on its axis (forward, back, left, right, up, and down), no translations, etc.
 - [Servo Library](https://www.arduino.cc/reference/en/libraries/servo/)
 - [Arduino x ESC](https://bluerobotics.com/learn/controlling-basic-esc-with-the-arduino-serial-monitor/)
 - [T100/200 Details](https://bluerobotics.com/store/thrusters/t100-t200-thrusters/t200-thruster-r2-rp/#tab-technical-details)

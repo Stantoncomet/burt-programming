@@ -12,6 +12,7 @@ bool withinSpread(int value, int spread);
 
 /**
  * Check if a value does not fall within a range, centered on 0.
+ * Also try `!withinSpread()`.
  * @param value Value to check.
  * @param spread Half of the range, does the value fall outside of -`spread` and +`spread`?
  * @return If the value did not fall in the range.
@@ -29,5 +30,12 @@ bool outofSpread(int value, int spread);
 */
 float mapValue(int value, int fromMin, int fromMax, int toMin, int toMax);
 
+/**
+ * Caps a value at a maximum.
+ * @param value Value to cap.
+ * @param max Maximim the value can be.
+ * @return The original value if less than max, or the max if the value was larger.
+*/
+float capValue(float value, float max);
 
 #endif
