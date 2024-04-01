@@ -6,6 +6,8 @@ To use the library containing almost all of our code, you must copy the entire `
 
 ## Progress
 **Todo**
+- Get controller input to send data to 2nd Arduino using MAX485 chip
+
 - Implement motor limiting
 
 - Write doc on how to use BurtLib_2024
