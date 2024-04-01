@@ -2,7 +2,24 @@
 Some examples of code we use for the robot. Examples try to be heavily commented, with a minimumal ammount of code.
 
 Current examples are:
+- Wired MAX485 Communication
 - Wireless Communication
+
+
+## Wired MAX485 Communication
+Projects used for this example are `MAX485_tx` for sending data and `MAX485_rx` for receiving. Data can only be sent one-way in this example.
+
+**Reference Links**
+- [How to use MAX485 with Arduino](https://www.circuitstate.com/tutorials/what-is-rs-485-how-to-use-max485-with-arduino-for-reliable-long-distance-serial-communication/)
+- [MAX485 Data Sheet](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX1487-MAX491.pdf)
+
+### Overview
+We will be sending data using the MAX485 chip, which helps carry data over long distances. The chip has an input, input enable, output, output enable, power, ground, `A`, and `B`. `A` and `B` are the ports actually doing the communication shenanigans, they connect to the other `A` and `B` on the second chip.
+
+![image](https://www.circuitstate.com/wp-content/uploads/2022/09/RS485-Serial-Communication-Tutorial-with-Arduino-and-MAX485-Pinout-Diagram-CIRCUITSTATE-Electronics-01-768x584.png)
+
+![image](https://github.com/Stantoncomet/burt-programming/assets/96146851/af2ec19e-61b8-4e9f-9ec1-ba68c496b85c)
+
 
 ## Wireless Communication
 Examples `wireless_tx` and `wireless_rx`, respectively.
