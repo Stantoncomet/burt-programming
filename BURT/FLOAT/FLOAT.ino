@@ -4,12 +4,13 @@
 #include <SPI.h> //literally no idea what this does
 
 #define HOME_ADDR 2 //This arduino's transiever's address
+#define TO_ADDR 1 //this is the other arduino's address
 
 RH_RF69 rf69(4, 3); //4: NSS/CS port; 3: data/G0 port
 RHReliableDatagram rf69_manager(rf69, HOME_ADDR); //setup addresses and stuff
 
 const char TEAMNUMBER[] = "r6"; //team number to display
-const int MFBUTTONPIN = 2; //pin for the button that makes a stepper motor spin
+const int MFBUTTONPIN = 5; //pin for the button that makes a stepper motor spin
 const int MFMOTORPIN = 8; //servo pin
 int MFButtonState;
 
@@ -31,7 +32,7 @@ unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
 unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
 
 
-const int SOLENOIDPIN = 4;
+const int SOLENOIDPIN = 6;
 
 Servo MFMotor; //make a servo motor object
 
@@ -74,7 +75,8 @@ MFMotor.attach(MFMOTORPIN);
 
 uint8_t buf[RH_RF69_MAX_MESSAGE_LEN]; //buffer where recieved message will be stored
 
-void loop() {
+void loop() 
+{
   // read the state of the switch into a local variable:
   int reading = digitalRead(MFBUTTONPIN);
 
@@ -86,51 +88,61 @@ void loop() {
   // since the last press to ignore any noise:
 
   // If the switch changed, due to noise or pressing:
-  if (reading != lastButtonState) {
+  if (reading != lastButtonState) 
+  {
     // reset the debouncing timer
     lastDebounceTime = millis();
   }
 
-  if ((millis() - lastDebounceTime) > debounceDelay) {
+  if ((millis() - lastDebounceTime) > debounceDelay) 
+  {
     // whatever the reading is at, it's been there for longer than the debounce
     // delay, so take it as the actual current state:
 
     // if the button state has changed:
-    if (reading != MFButtonState) {
+    if (reading != MFButtonState) 
+    {
       MFButtonState = reading;
 
       // only step if the new button state is HIGH
-      if (MFButtonState == HIGH) {
+      if (MFButtonState == HIGH) 
+      {
         MFMotor.write(110);
-        if (currentMillis - previousMillis >= MFMOTORINTERVAL) { //runs every PRINT_INTERVAL 1000 milliseconds
-    previousMillis = currentMillis; //Reset timer
+        if (currentMillis - previousMillis >= MFMOTORINTERVAL) 
+        { //runs every PRINT_INTERVAL 1000 milliseconds
+          previousMillis = currentMillis; //Reset timer
 
-    MFMotor.write(90);
+          MFMotor.write(90);
+        }
       }
     }
+
+
+    // save the reading. Next time through the loop, it'll be the lastButtonState:
+    lastButtonState = reading;
+
+   write_to_VFD();
   }
 
 
-  // save the reading. Next time through the loop, it'll be the lastButtonState:
-  lastButtonState = reading;
-
-  write_to_VFD();
-  }
-
-
-  if (rf69_manager.available()) { //if tranciever is running
+  if (rf69_manager.available()) 
+  { //if tranciever is running
     uint8_t len = sizeof(buf); //length of buffer
-    if (rf69_manager.recvfromAck(buf, &len)) { //if we have got a message
+    if (rf69_manager.recvfromAck(buf, &len)) //if we have got a message
+    { 
       buf[len] = 0; // zero out remaining string
       strcat(buf, (char)buf[RH_RF69_MAX_MESSAGE_LEN]);
 
-    if (buf == "1") {
+      if (buf == "1") 
+      {
 
-    digitalWrite(SOLENOIDPIN, HIGH);
-    if (currentMillis - previousMillis >= SOLENOIDINTERVAL) { //runs every SOLENOIDINTERVAL 10000 milliseconds (10 sec)
-      previousMillis = currentMillis; //Reset timer
+        digitalWrite(SOLENOIDPIN, HIGH);
+        if (currentMillis - previousMillis >= SOLENOIDINTERVAL) //runs every SOLENOIDINTERVAL 10000 milliseconds (10 sec)
+        { 
+          previousMillis = currentMillis; //Reset timer
   
-      digitalWrite(SOLENOIDPIN, LOW);
+          digitalWrite(SOLENOIDPIN, LOW);
+        }
       }
     }
   }
@@ -140,18 +152,10 @@ void loop() {
 }
 
 
-//void loop() {
-  //write_to_VFD();
 
 
-  //mFButtonState = digitalRead(MFBUTTONPIN);
-  //if (mFButtonState) { //spin step if button is pressed
-    //mFMotor.step(1);
-  //}
-//}
-
-
-void write_to_VFD() {
+void write_to_VFD() 
+{     //<-----it says the error is here, i confused
 
   char temp[3]; //string for holding time to concat
   unsigned long minutes;
@@ -167,7 +171,8 @@ void write_to_VFD() {
 
   currentMillis = millis();
 
-  if (currentMillis - previousMillis >= PRINT_INTERVAL) { //runs every PRINT_INTERVAL 1000 milliseconds
+  if (currentMillis - previousMillis >= PRINT_INTERVAL) //runs every PRINT_INTERVAL 1000 milliseconds
+  { 
     previousMillis = currentMillis; //Reset timer
 
 
@@ -177,47 +182,52 @@ void write_to_VFD() {
     afterSeconds = (originalSeconds % 60); //factors the total number out of 60, then keeps the remainder (61 seconds becomes 1, 132 seconds becomes 12, etc.)
    
     //erase the string
-    for(int i = 0; i < DISPLAYLIMIT; i++)
+    for(int i = 0; i < DISPLAYLIMIT; i++) 
+    {
       time_team[i] = '\0';
 
 
-    itoa(hours, temp, 10);
-    strcat(time_team, temp);
-    strcat(time_team, ":");
+      itoa(hours, temp, 10);
+      strcat(time_team, temp);
+      strcat(time_team, ":");
 
-    if (minutes < 10)
-      strcat(time_team, "0");
-    itoa(minutes, temp, 10);
-    strcat(time_team, temp);
-    strcat(time_team, ":");
+      if (minutes < 10) 
+      {
+        strcat(time_team, "0");
+        itoa(minutes, temp, 10);
+        strcat(time_team, temp);
+        strcat(time_team, ":");
 
-    if (afterSeconds < 10)
-      strcat(time_team, "0");
-    itoa(afterSeconds, temp, 10);
-    strcat(time_team, temp);
+        if (afterSeconds < 10) 
+        {
+          strcat(time_team, "0");
+          itoa(afterSeconds, temp, 10);
+          strcat(time_team, temp);
    
-    strcat(time_team, " #");
-    strcat(time_team, TEAMNUMBER);
+          strcat(time_team, " #");
+          strcat(time_team, TEAMNUMBER);
 
-    //adds blank spaces to fill the display limit so it doesn't scroll and mess up
-    int spaceLeft = DISPLAYLIMIT-strlen(time_team);
-    for (int i = 0; i < spaceLeft; i++)
-      strcat(time_team, " ");
+        }
+      }
+      //adds blank spaces to fill the display limit so it doesn't scroll and mess up
+      int spaceLeft = DISPLAYLIMIT-strlen(time_team);
+      for (int i = 0; i < spaceLeft; i++)
+      {
+        strcat(time_team, " ");
 
 
-    strcat(time_team, "\0");
+       strcat(time_team, "\0");
+      }
+   
+    }
 
-    //write_to_monitor(time_team);
+    //send time and team number to box
+    
+    rf69_manager.sendtoWait((uint8_t *)time_team, strlen(time_team), TO_ADDR); //sends message
+ 
   }
 
-  //send time and team number to box
-  char message[20] = time_team; //message to send
-   rf69_manager.sendtoWait((uint8_t *)message, strlen(message), TO_ADDR); //sends message
- 
 }
 
-
-//void write_to_monitor(char* monitor_string) {
- // Serial.print(monitor_string); //print(), not println()
 
 
