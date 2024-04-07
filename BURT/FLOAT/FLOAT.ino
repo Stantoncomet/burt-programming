@@ -1,7 +1,9 @@
 #include <Servo.h> //servo library
-#include <RH_RF69.h>
-#include <RHReliableDatagram.h> //transciever libraries
 #include <SPI.h> //literally no idea what this does
+#include <RH_RF69.h>
+#include <RHReliableDatagram.h>
+
+#define HOME_ADDR 2 //This arduino's transiever's address
 
 #define HOME_ADDR 2 //This arduino's transiever's address
 #define TO_ADDR 1 //this is the other arduino's address
@@ -62,7 +64,7 @@ void setup() {
   pinMode(MFBUTTONPIN, INPUT); //button that makes the float go up
   pinMode(SOLENOIDPIN, OUTPUT); //Sets the solenoid pin as an output
 
-MFMotor.attach(MFMOTORPIN);
+  MFMotor.attach(MFMOTORPIN);
 
 
   //converts clock time to seconds
@@ -70,7 +72,8 @@ MFMotor.attach(MFMOTORPIN);
   startTime += STARTCLOCK[1]*60;
   startTime += STARTCLOCK[2];
 
- 
+  // Set up the radio
+  radioInit();
 }
 
 uint8_t buf[RH_RF69_MAX_MESSAGE_LEN]; //buffer where recieved message will be stored
@@ -108,8 +111,7 @@ void loop()
       if (MFButtonState == HIGH) 
       {
         MFMotor.write(110);
-        if (currentMillis - previousMillis >= MFMOTORINTERVAL) 
-        { //runs every PRINT_INTERVAL 1000 milliseconds
+        if (currentMillis - previousMillis >= MFMOTORINTERVAL) { //runs every MFMOTORINTERVAL 1000 milliseconds
           previousMillis = currentMillis; //Reset timer
 
           MFMotor.write(90);
@@ -216,18 +218,33 @@ void write_to_VFD()
         strcat(time_team, " ");
 
 
-       strcat(time_team, "\0");
-      }
-   
-    }
+    strcat(time_team, "\0");
 
-    //send time and team number to box
-    
-    rf69_manager.sendtoWait((uint8_t *)time_team, strlen(time_team), TO_ADDR); //sends message
+    //write_to_monitor(time_team);
+  }
+
+  //send time and team number to box
+  rf69_manager.sendtoWait((uint8_t *)time_team, strlen(time_team), TO_ADDR); //sends message
  
   }
 
+  }
 }
 
 
+void radioInit() {
+  //manual reset the transiever, please don't ask me why
+  pinMode(2, OUTPUT); //reset pin number
+  digitalWrite(2, LOW);
+  digitalWrite(2, HIGH);
+  delay(10);
+  digitalWrite(2, LOW);
+  delay(10);
 
+  //initialize
+  rf69_manager.init();
+  //set frequency
+  rf69.setFrequency(434.0);
+  //set high power mode (for RFM69HCW model)
+  rf69.setTxPower(20, true);
+}

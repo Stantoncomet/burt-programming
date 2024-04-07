@@ -1,0 +1,70 @@
+//Sending ROV instruction data over long distances with the MAX845 chip
+
+/**
+ * Stewart's enum thing is too confusing, so we are gonna use a struct.
+ * It's more work, but takes less brain power to understand.
+ * (Hopefully. If this is not the case, then I have epically failed.)
+ * Currently only supports integers, but we can find a way to send more data types if needed.
+*/
+struct HoldingRegs {
+  int thruster_1;
+  int thruster_2;
+  int thruster_3;
+  int thruster_4;
+  int thruster_5;
+  int thruster_6;
+
+  // struct needs begin() and end() functions so we can iterate over it.
+  int* begin() {
+    return &thruster_1;
+  }
+  int* end() {
+    return &thruster_6;
+  }
+};
+
+HoldingRegs holding_regs = { 1, 2, 3, 4, 5, 6 };
+
+#define TX_ENABLE 22 // The pin number of the Tx ENABLE
+
+void setup() {
+  // Begin the Serial at 9600 Baud
+  Serial.begin(115200);
+
+}
+
+void loop() {
+  for (auto regs : holding_regs) {
+    Serial.println(regs);
+  }
+
+  delay(100);
+}
+
+// Creates a command to send to the ROV
+void writeToROV(int index) { // Should look like Windex:1234\0 in the end
+
+  char out_str[20]; // String containing the command to send to ROV
+  char str[5];
+  
+  // Clear buffer
+  for (int i = 0; i < 20; i++) {
+    out_str[i] = '\0';
+  }
+   
+  strcpy(out_str, "W"); // Let ROV know we are writing to it, command looks like "W"
+  
+  itoa(index, str, 10); // Turn index into a character array (a string)
+  strcat(out_str, str); // Append index to the command, now says "Windex"
+
+  strcat(out_str, ":"); // Now says "Windex:"
+  
+  //itoa(HoldingRegs[index], str, 10); // Turn value into a character array
+  strcat(out_str, str); // Now says "Windex:value\0"
+ 
+  digitalWrite(TX_ENABLE, HIGH);  // Enable tx to MAX485
+  Serial1.print(out_str);  // Print to rov; takes about 8 ms
+  Serial1.flush();         // Empty xmit buffer
+  digitalWrite(TX_ENABLE, LOW);
+
+}
