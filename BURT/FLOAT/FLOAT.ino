@@ -209,8 +209,10 @@ void write_to_VFD() {
 
     //write_to_monitor(time_team);
   }
+
   //send time and team number to box
-   radio.send(3, time_team, DISPLAYLIMIT);//<---change this
+  char message[20] = time_team; //message to send
+   rf69_manager.sendtoWait((uint8_t *)message, strlen(message), TO_ADDR); //sends message
  
 }
 
