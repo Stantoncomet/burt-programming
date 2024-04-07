@@ -184,8 +184,7 @@ void write_to_VFD()
     afterSeconds = (originalSeconds % 60); //factors the total number out of 60, then keeps the remainder (61 seconds becomes 1, 132 seconds becomes 12, etc.)
    
     //erase the string
-    for(int i = 0; i < DISPLAYLIMIT; i++) 
-    {
+    for(int i = 0; i < DISPLAYLIMIT; i++) {
       time_team[i] = '\0';
 
 
@@ -193,15 +192,13 @@ void write_to_VFD()
       strcat(time_team, temp);
       strcat(time_team, ":");
 
-      if (minutes < 10) 
-      {
+      if (minutes < 10) {
         strcat(time_team, "0");
         itoa(minutes, temp, 10);
         strcat(time_team, temp);
         strcat(time_team, ":");
 
-        if (afterSeconds < 10) 
-        {
+        if (afterSeconds < 10) {
           strcat(time_team, "0");
           itoa(afterSeconds, temp, 10);
           strcat(time_team, temp);
@@ -213,21 +210,14 @@ void write_to_VFD()
       }
       //adds blank spaces to fill the display limit so it doesn't scroll and mess up
       int spaceLeft = DISPLAYLIMIT-strlen(time_team);
-      for (int i = 0; i < spaceLeft; i++)
-      {
+      for (int i = 0; i < spaceLeft; i++) {
         strcat(time_team, " ");
-
-
-    strcat(time_team, "\0");
-
-    //write_to_monitor(time_team);
-  }
-
+        strcat(time_team, "\0");
+      }
+    }
   //send time and team number to box
   rf69_manager.sendtoWait((uint8_t *)time_team, strlen(time_team), TO_ADDR); //sends message
- 
-  }
-
+  
   }
 }
 
