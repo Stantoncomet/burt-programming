@@ -1,9 +1,12 @@
 #include <Servo.h> //servo library
-#include <RFM69.h> //transciever library
+#include <RH_RF69.h>
+#include <RHReliableDatagram.h> //transciever libraries
 #include <SPI.h> //literally no idea what this does
 
-RFM69 radio;
+#define HOME_ADDR 2 //This arduino's transiever's address
 
+RH_RF69 rf69(4, 3); //4: NSS/CS port; 3: data/G0 port
+RHReliableDatagram rf69_manager(rf69, HOME_ADDR); //setup addresses and stuff
 
 const char TEAMNUMBER[] = "r6"; //team number to display
 const int MFBUTTONPIN = 2; //pin for the button that makes a stepper motor spin
@@ -34,7 +37,27 @@ Servo MFMotor; //make a servo motor object
 
 void setup() {
   Serial.begin(9600); //This would probably be different with the transceiver? maybe?
- 
+
+    //manual reset the transiever, please don't ask me why
+    //this could all be in a function
+  pinMode(2, OUTPUT); //reset pin number
+  digitalWrite(2, LOW);
+  digitalWrite(2, HIGH);
+  delay(10);
+  digitalWrite(2, LOW);
+  delay(10);
+
+  //initialize
+  rf69_manager.init();
+  //set frequency
+  rf69.setFrequency(434.0);
+  //set high power mode (for RFM69HCW model)
+  rf69.setTxPower(20, true);
+
+  Serial.println("------------------------------");
+
+
+  
   pinMode(MFBUTTONPIN, INPUT); //button that makes the float go up
   pinMode(SOLENOIDPIN, OUTPUT); //Sets the solenoid pin as an output
 
@@ -46,10 +69,10 @@ MFMotor.attach(MFMOTORPIN);
   startTime += STARTCLOCK[1]*60;
   startTime += STARTCLOCK[2];
 
-  radio.initialize(RF69_915MHZ, 1, 0);
-  radio.setHighPower();
+ 
 }
 
+uint8_t buf[RH_RF69_MAX_MESSAGE_LEN]; //buffer where recieved message will be stored
 
 void loop() {
   // read the state of the switch into a local variable:
@@ -95,15 +118,13 @@ void loop() {
   }
 
 
-  //size of message being recieved, should just be "1", with a size of 1 character
-  static char message[1];
+  if (rf69_manager.available()) { //if tranciever is running
+    uint8_t len = sizeof(buf); //length of buffer
+    if (rf69_manager.recvfromAck(buf, &len)) { //if we have got a message
+      buf[len] = 0; // zero out remaining string
+      strcat(buf, (char)buf[RH_RF69_MAX_MESSAGE_LEN]);
 
-  if (radio.receiveDone()) {
-    for (byte i = 0; i < radio.DATALEN; i++)
-      strcat(message, (char)radio.DATA[i]);
-    
-
-    if (message == "1") {
+    if (buf == "1") {
 
     digitalWrite(SOLENOIDPIN, HIGH);
     if (currentMillis - previousMillis >= SOLENOIDINTERVAL) { //runs every SOLENOIDINTERVAL 10000 milliseconds (10 sec)
@@ -189,10 +210,12 @@ void write_to_VFD() {
     //write_to_monitor(time_team);
   }
   //send time and team number to box
-   radio.send(3, time_team, DISPLAYLIMIT);
+   radio.send(3, time_team, DISPLAYLIMIT);//<---change this
  
 }
 
 
 //void write_to_monitor(char* monitor_string) {
  // Serial.print(monitor_string); //print(), not println()
+
+
