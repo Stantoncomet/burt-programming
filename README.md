@@ -48,6 +48,7 @@ To keep things at least semi-organized, please follow these standards when writi
 
 Here are the types of naming conventions used in programming:
 - snake_case
+- Fomral_Snake_Case
 - UPPER_CASE_SNAKE_CASE
 - camelCase
 - PascalCase
@@ -63,6 +64,8 @@ Use camelCase when naming `.cpp`, `.h`, or any types of files.
 **Naming Variables and Functions**
 Normal variables are named with snake_case.
 
+Global variables, such as those defined in headers, are named with Formal_Snake_Case
+
 `#define`s or constant variables are named with UPPER_CASE_SNAKE_CASE.
 
 `struct`s are named with PascalCase.
@@ -72,7 +75,9 @@ Functions follow the camelCase convention. Also please put the open bracket on t
 **Writing Comments**
 Please write comments, but write them cleanly if you can! Here's an example.
 ```cpp
-// Returns the average of two integers.
+/*
+ * Returns the average of two integers.
+*/
 double findMean(int val1, int val2) {
   double mean = (val1 + val2) / 2; // Calculate sum of the two given numbers, divided by the number of given numbers.
   return mean;

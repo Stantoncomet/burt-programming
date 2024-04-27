@@ -5,17 +5,18 @@
 
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
+  Serial1.begin(9600);
 
-  //controller setup
-  setupController();
+  setupComms();
+  setupMotors();
 
 }
 
 
 void loop() {
-  controllerRoutine(); // reads and sets all inputs to variables
-  updateROVData(); // communication to ROV
+  ROVCommunications(); // fetch data from control box
+  writeMotorSpeeds(); // set motors
 
   
 }

@@ -1,21 +1,26 @@
 #ifndef controller_h
 #define controller_h
 
+
 /**
  * Max joystick value
 */
-#define JOYSTICK_MAX   32000
+#define JOYSTICK_MAX       32000
 
 /**
  * Range where any hat(joystick) input will just be zero
 */
-#define DEADBAND       7500
+#define JOYSTICK_DEADBAND  7500
 
 /**
  * Range to accept foward/backward movement vs side-to-side
 */
-#define XYTOLERANCE    20000
+#define XYTOLERANCE        20000
 
+/**
+ * 
+*/
+#define CONTROLLER_READ_INTERVAL 10
 
 /**
  * Initialize xbox controller.
@@ -32,15 +37,21 @@ void controllerRoutine();
  * Checks if joystick is pushed forward or backward, out of deadband, and within tolerances.
  * @return Y of movement joystick if success, else `0`.
 */
-int getInline();
+//int getInline();
 
 /**
  * Checks if joystick is pushed left or right, out of deadband, and within tolerances.
  * @return X of movement joystick if success, else `0`.
 */
-int getStrafe();
+//int getStrafe();
 
-//dumb function too lazy to remove but not lazy enough to write this desc
-int driveStick();
+/**
+ * Get joystick value
+*/
+int readJoystick(char joystick, char axis, bool map_to_speed = true);
+
+void verticalMotors();
+
+void thrustMotors();
 
 #endif

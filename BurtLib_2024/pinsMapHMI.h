@@ -1,0 +1,2 @@
+//MAX485 ENABLE
+#define TX_ENABLE 22

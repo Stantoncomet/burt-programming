@@ -1,16 +1,8 @@
-#ifndef HMI_h
-#define HMI_h
+#ifndef ROV_h
+#define ROV_h
 
+#define ROV_COMM_BUFF 24 // Length of buffer from HMI, presumably
 
-/**
- * Milliseconds between sendind data to ROV.
-*/
-#define ROV_UPDATE_DELAY  50
-
-/**
- * Value range where thrusters don't move
-*/
-#define THRUSTER_DEADBAND 10
 
 /**
  * We are using an enum here to give each index of the 
@@ -48,15 +40,8 @@ static unsigned int Holding_Regs[HOLDING_REGS_SIZE];
 void setupComms();
 
 /**
- * Sends an entry of Holding_Regs via Serial1 to the ROV by constructing a
- *  sort of command. Ex: "W3:1600\0"
- * @param index The index of Holding_Regs to send.
+ * Recieve data from HMI
 */
-void writeToROV(int index);
-
-/**
- * Sends each value of holding_regs to the ROV, one value each function call, incrimenting.
-*/
-void updateROVData();
+void ROVCommunications();
 
 #endif

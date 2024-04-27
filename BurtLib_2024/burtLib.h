@@ -1,6 +1,25 @@
 #ifndef burtLib_h
 #define burtLib_h
 
+/**
+ * Limits the top speed of motors. Actual range is between 1100 and 1900
+*/
+#define SPEED_LIMIT       200
+
+/**
+ * Stop signal for thruster servos
+*/
+#define INIT_SERVO        1500
+
+/**
+ * Maximum frequency the thrusters can spin
+*/
+#define MAX_SPEED (INIT_SERVO + SPEED_LIMIT)
+
+/**
+ * Maximum frequency the thrusters can spin in revserse
+*/
+#define MIN_SPEED (INIT_SERVO - SPEED_LIMIT)
 
 /**
  * Check if a value falls within a range, centered on 0.
@@ -18,24 +37,5 @@ bool withinSpread(int value, int spread);
  * @return If the value did not fall in the range.
 */
 bool outofSpread(int value, int spread);
-
-/**
- * Map a value in one range to equavelant value in another range. Aka, porportionally scale a value.
- * @param value Value to scale.
- * @param fromMin Minimum value in the value's orignal range.
- * @param fromMax Maximum value in the value's orignal range.
- * @param toMin Minimum value in the value's new range.
- * @param toMax Maximum value in the value's new range.
- * @return A new value, porportionally equivalent to the old.
-*/
-float mapValue(int value, int fromMin, int fromMax, int toMin, int toMax);
-
-/**
- * Caps a value at a maximum.
- * @param value Value to cap.
- * @param max Maximim the value can be.
- * @return The original value if less than max, or the max if the value was larger.
-*/
-float capValue(float value, float max);
 
 #endif

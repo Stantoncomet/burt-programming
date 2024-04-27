@@ -58,7 +58,8 @@ void writeToROV(int index) { // Should look like Windex:1234\0 in the end
   char out_str[20]; // String containing the command to send to ROV
   char str[5];
 
-  digitalWrite(TX_ENABLE, HIGH);
+  // Constantly enable MAX485 for testing
+  //digitalWrite(TX_ENABLE, HIGH);
   
   // Clear buffer
   for (int i = 0; i < 20; i++) {
@@ -75,9 +76,9 @@ void writeToROV(int index) { // Should look like Windex:1234\0 in the end
   itoa(holding_regs[index], str, 10); // Turn value into a character array
   strcat(out_str, str); // Now says "Windex:value\0"
  
-  //digitalWrite(TX_ENABLE, HIGH);  // Enable tx to MAX485
+  digitalWrite(TX_ENABLE, HIGH);  // Enable tx to MAX485
   Serial1.print(out_str);  // Print to rov; takes about 8 ms
   Serial1.flush();         // Empty xmit buffer
-  //digitalWrite(TX_ENABLE, LOW);
+  digitalWrite(TX_ENABLE, LOW);
 
 }
