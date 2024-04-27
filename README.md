@@ -6,17 +6,23 @@ To use the library containing almost all of our code, you must copy the entire `
 
 ## Progress
 **Todo**
-- Get controller input to send data to 2nd Arduino using MAX485 chip
-
 - Implement motor limiting
+
+- Test everything I've added
 
 - Write doc on how to use BurtLib_2024
 
 **Doing**
-- Send correct data
-- Send data over long distance using chip thing
+- having a good time
+- not gonna stop at all
+- writing to motors
+- 
 
 **Finished**
+- Hopefully fixed controller issues
+- Send correct data
+- Send data over long distance using chip thing
+- Get controller input to send data to 2nd Arduino using MAX485 chip
 - Send data between Arduinos
 - Add proper controller deadbands and tollerances
 - Tollerances actually work now
