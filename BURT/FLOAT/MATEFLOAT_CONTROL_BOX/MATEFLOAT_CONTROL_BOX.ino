@@ -2,8 +2,8 @@
 #include <RHReliableDatagram.h>
 #include <SPI.h>
 
-#define HOME_ADDR 1 //This arduino's transiever's address
-#define TO_ADDR 2 //this is the other arduino's address
+#define HOME_ADDR 2 //This arduino's transiever's address
+#define TO_ADDR 1 //this is the other arduino's address
 
 RH_RF69 rf69(4, 3); //4: NSS/CS port; 3: data/G0 port
 RHReliableDatagram rf69_manager(rf69, HOME_ADDR); //setup addresses and stuff
@@ -52,9 +52,10 @@ void loop()
     if (rf69_manager.recvfromAck(buf, &len)) //if we have got a message
     { 
       buf[len] = 0; // zero out remaining string
-      strcat(buf, (char)buf[RH_RF69_MAX_MESSAGE_LEN]); //not sure if this works but i think it does?
+      //strcat(buf, buf[RH_RF69_MAX_MESSAGE_LEN]); //not sure if this works but i think it does?
+      //strcat(buf, '\0');
 
-      //need code here to display recieved message
+      Serial.print((char*)buf);
     }
   }
 
@@ -75,6 +76,7 @@ void loop()
 
       if (buttonState == 1) 
       {
+        
         rf69_manager.sendtoWait((uint8_t *)message, strlen(message), TO_ADDR); //sends message
       }
     }
