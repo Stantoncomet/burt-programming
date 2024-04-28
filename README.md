@@ -62,12 +62,12 @@ Here are the types of naming conventions used in programming:
 
 Notice how each word is seperated, either with an underscore, hyphen, or capital letter. If you're name is really long or commonly shortened, like Human Machine Interface, or Remotely Operated Vehicle, you can use an acronym. Try to follow these cases, unless you have a good reason not to.
 
-**Naming Files**
+#### Naming Files
 Use UPPER_CASE_SNAKE_CASE when naming `.ino` files.
 
 Use camelCase when naming `.cpp`, `.h`, or any types of files.
 
-**Naming Variables and Functions**
+#### Naming Variables and Functions
 Normal variables are named with snake_case.
 
 Global variables, such as those defined in headers, are named with Formal_Snake_Case
@@ -78,7 +78,7 @@ Global variables, such as those defined in headers, are named with Formal_Snake_
 
 Functions follow the camelCase convention. Also please put the open bracket on the same line as the function definition.
 
-**Writing Comments**
+#### Writing Comments
 Please write comments, but write them cleanly if you can! Here's an example.
 ```cpp
 /*
@@ -90,11 +90,10 @@ double findMean(int val1, int val2) {
 }
 ```
 
-**Misc**
+#### Misc
 Some other things to note.
 - Always try to write numbers in their numerical form, rather than their word form.
-
-When commenting on a chunk of code, put the comment *above* the code. When commenting on just a line, like setting a variable, you can write the comment in-line.
+- When commenting on a chunk of code, put the comment *above* the code. When commenting on just a line, like setting a variable, you can write the comment in-line. Or do whatever feels right, as long as it's clear.
 
 ## Misc
 - https://projecthub.arduino.cc/Arduino_Scuola/joystick-controlled-rc-car-338a83 (???)
