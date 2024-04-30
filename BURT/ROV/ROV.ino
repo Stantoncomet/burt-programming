@@ -6,9 +6,9 @@
 
 void setup() {
   Serial.begin(9600);
-  Serial1.begin(9600);
+  //Serial1.begin(9600);
 
-  setupComms();
+  setupCommsROV();
   setupMotors();
 
 }
@@ -16,7 +16,6 @@ void setup() {
 
 void loop() {
   ROVCommunications(); // fetch data from control box
-  writeMotorSpeeds(); // set motors
-
-  
+  //limitMotors(); // limits running two motors maximum
+  //writeMotorSpeeds(); // set motors
 }

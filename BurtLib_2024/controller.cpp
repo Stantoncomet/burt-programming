@@ -6,6 +6,7 @@
 #include "burtLib.h"
 #include "HMI.h"
 
+
 /**
  * Usb port on shield
 */
@@ -14,6 +15,7 @@ USB Usb;
  * Primary drive controller.
 */
 XBOXONE Xbox(&Usb);
+
 
 void setupController() {
     if (Usb.Init() == -1) {
@@ -44,7 +46,7 @@ void setupController() {
 //         thrustMotors();
 
 //         for (int i = 0; i < HOLDING_REGS_SIZE; i++) {
-//             Serial.println(Holding_Regs[i]);
+//             Serial.println(Holding_Regs_HMI[i]);
 //         }
 //         Serial.println("---");
            
@@ -63,10 +65,14 @@ void controllerRoutine() {
         verticalMotors();
         thrustMotors();
 
+        //debug
+        /*burtLib
         for (int i = 0; i < HOLDING_REGS_SIZE; i++) {
-            Serial.println(Holding_Regs[i]);
+            Serial.print(Holding_Regs_HMI[i]);
+            Serial.print(", ");
         }
-        Serial.println("---");
+        Serial.println();
+        */
     }
 
     delay(1);
@@ -145,7 +151,7 @@ void verticalMotors() {
             if(last_speed > MIN_SPEED)  // yea we can under speed by RAMP_STEP.
                 last_speed -= RAMP_STEP;          
         }   
-      Holding_Regs[THRUSTER_1] = Holding_Regs[THRUSTER_2] = last_speed; // update this ever RAMP_SPEED microseconds.
+      Holding_Regs_HMI[THRUSTER_1] = Holding_Regs_HMI[THRUSTER_2] = last_speed; // update this ever RAMP_SPEED microseconds.
    }
 }
  
@@ -154,41 +160,41 @@ void thrustMotors() {
     int xaxis = readJoystick('L', 'X');  // return value of -SPEED_LIMIT, +SPEED_LIMIT
     int turn_val = readJoystick('R', 'X');
 
-    Holding_Regs[THRUSTER_3] = Holding_Regs[THRUSTER_4] = Holding_Regs[THRUSTER_5] = Holding_Regs[THRUSTER_6] = INIT_SERVO;
+    Holding_Regs_HMI[THRUSTER_3] = Holding_Regs_HMI[THRUSTER_4] = Holding_Regs_HMI[THRUSTER_5] = Holding_Regs_HMI[THRUSTER_6] = INIT_SERVO;
 
 
     // Moving stick left
     if (turn_val < 0) {
-        Holding_Regs[THRUSTER_5] = turn_val + INIT_SERVO;
-        Holding_Regs[THRUSTER_4] = -turn_val + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_5] = turn_val + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_4] = -turn_val + INIT_SERVO;
         return; //leave the function
     }
     // Moving stick right
     if (turn_val > 0) {
-        Holding_Regs[THRUSTER_3] = turn_val + INIT_SERVO;
-        Holding_Regs[THRUSTER_6] = -turn_val + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_3] = turn_val + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_6] = -turn_val + INIT_SERVO;
         return; //leave the function
     }
     //If not turning, then check movement
 
     // If joystick is mostly forward 
     if (yaxis > abs(xaxis)) {
-        Holding_Regs[THRUSTER_3] = Holding_Regs[THRUSTER_5] = yaxis + INIT_SERVO; //joystick reading plus init signal
+        Holding_Regs_HMI[THRUSTER_3] = Holding_Regs_HMI[THRUSTER_5] = yaxis + INIT_SERVO; //joystick reading plus init signal
         return;
     }
     // backwards
     if (yaxis < -abs(xaxis)) {
-        Holding_Regs[THRUSTER_4] = Holding_Regs[THRUSTER_6] = yaxis + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_4] = Holding_Regs_HMI[THRUSTER_6] = yaxis + INIT_SERVO;
         return;
     }
     // If joystick is mostly port
     if (xaxis > abs(yaxis)) {
-        Holding_Regs[THRUSTER_3] = Holding_Regs[THRUSTER_4] = xaxis + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_3] = Holding_Regs_HMI[THRUSTER_4] = xaxis + INIT_SERVO;
         return;
     }
     // starboard
     if (xaxis < -abs(yaxis)) {
-        Holding_Regs[THRUSTER_5] = Holding_Regs[THRUSTER_6] = xaxis + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_5] = Holding_Regs_HMI[THRUSTER_6] = xaxis + INIT_SERVO;
         return;
     }
 

@@ -5,6 +5,18 @@
 #include "ROV.h"
 #include "Arduino.h"
 
+
+/**
+ * Define objects like servos in the .cpp files after using extern
+*/
+Servo Servo1;
+Servo Servo2;
+Servo Servo3;
+Servo Servo4;
+Servo Servo5;
+Servo Servo6;
+
+
 void setupMotors() {
     // Attach servos
     Servo1.attach(SERVO_PIN_1);
@@ -24,12 +36,25 @@ void setupMotors() {
     delay(2000); //  delay to allow the ESC to recognize the stopped signal
 
     // set data array motors to 1500
-    Holding_Regs[THRUSTER_1] = INIT_SERVO;
-    Holding_Regs[THRUSTER_2] = INIT_SERVO;
-    Holding_Regs[THRUSTER_3] = INIT_SERVO;
-    Holding_Regs[THRUSTER_4] = INIT_SERVO;
-    Holding_Regs[THRUSTER_5] = INIT_SERVO;
-    Holding_Regs[THRUSTER_6] = INIT_SERVO;
+    Holding_Regs_ROV[THRUSTER_1] = INIT_SERVO;
+    Holding_Regs_ROV[THRUSTER_2] = INIT_SERVO;
+    Holding_Regs_ROV[THRUSTER_3] = INIT_SERVO;
+    Holding_Regs_ROV[THRUSTER_4] = INIT_SERVO;
+    Holding_Regs_ROV[THRUSTER_5] = INIT_SERVO;
+    Holding_Regs_ROV[THRUSTER_6] = INIT_SERVO;
+}
+
+void limitMotors() {
+    int running_motors = 0; // motors currently running
+    // if theres a thruster entry that is running, then increase running motors
+    for (int i = THRUSTER_1; i < THRUSTER_6; i++) {
+        if (Holding_Regs_ROV[i] != INIT_SERVO) {
+            // set any thrusters over the max runnign limit to 1500 (stop)
+            if (++running_motors > MAX_MOTORS) {
+                Holding_Regs_ROV[i] = INIT_SERVO;
+            }
+        }
+    }
 }
 
 void writeMotorSpeeds() {
@@ -38,13 +63,18 @@ void writeMotorSpeeds() {
     if ((motor_update + MOTOR_UPDATE_DELAY) < millis()) { // 100 ms don't know how often this should be updated
         motor_update = millis();   // reset timer
         
-        // check if speed is over the speed limit and just stop it
-        if ((Holding_Regs[THRUSTER_1] < (INIT_SERVO - SPEED_LIMIT)) || (Holding_Regs[THRUSTER_1] > (INIT_SERVO + SPEED_LIMIT))) {
-            Holding_Regs[THRUSTER_1] = INIT_SERVO;
-            Servo1.writeMicroseconds(Holding_Regs[THRUSTER_1]);       
-        } 
-        else {
-            Servo1.writeMicroseconds(Holding_Regs[THRUSTER_1]); // write to ESC
+        // loop over every motor
+        for (int i = THRUSTER_1; i < THRUSTER_6; i++) {
+            // check if speed is over the speed limit and just stop it
+            if ((Holding_Regs_ROV[i] < (INIT_SERVO - SPEED_LIMIT)) || (Holding_Regs_ROV[i] > (INIT_SERVO + SPEED_LIMIT))) {
+                Holding_Regs_ROV[i] = INIT_SERVO;
+                Servo1.writeMicroseconds(Holding_Regs_ROV[i]);
+                Serial.println(Holding_Regs_ROV[i]);
+            } 
+            else {
+                Servo1.writeMicroseconds(Holding_Regs_ROV[i]); // write to ESC
+            }
         }
+        
     }
 }

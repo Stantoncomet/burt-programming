@@ -2,8 +2,15 @@
 
 #include "pinsMapHMI.h"
 #include "Arduino.h"
+#include "burtLib.h"
 
-void setupComms() {
+// Fixes for IntelliSense, code works fine without it, but it gives a bunch of red squiggly errors
+//HardwareSerial Serial;
+//HardwareSerial Serial1;
+
+unsigned int Holding_Regs_HMI[HOLDING_REGS_SIZE];
+
+void setupCommsHMI() {
     pinMode(TX_ENABLE, OUTPUT);
     digitalWrite(TX_ENABLE, LOW);
 }
@@ -28,13 +35,16 @@ void writeToROV(int index) { // Should look like Windex:1234\0 in the end
 
     strcat(out_str, ":"); // Now says "Windex:"
     
-    itoa(Holding_Regs[index], str, 10); // Turn value into a character array
+    itoa(Holding_Regs_HMI[index], str, 10); // Turn value into a character array
     strcat(out_str, str); // Now says "Windex:value\0"
     
     digitalWrite(TX_ENABLE, HIGH);  // Enable tx to MAX485
     Serial1.print(out_str);  // Print to rov; takes about 8 ms
     Serial1.flush();         // Empty xmit buffer
     digitalWrite(TX_ENABLE, LOW);
+
+    //debug
+    //Serial.println(out_str);
 
 }
 
@@ -48,9 +58,9 @@ void updateROVData() {
         last_time = millis();
         index = ++index % HOLDING_REGS_SIZE; // Incriments index every time function is called
 
-        if (last_data[index] != Holding_Regs[index]) {
+        if (last_data[index] != Holding_Regs_HMI[index]) {
             writeToROV(index);
-            last_data[index] = Holding_Regs[index];
+            last_data[index] = Holding_Regs_HMI[index];
 
         } else {
             last_time += ROV_UPDATE_DELAY; // If value is unchanged, don't delay next call

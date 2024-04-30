@@ -10,7 +10,7 @@ void setup() {
   Serial.begin(115200);
   Serial1.begin(9600);
 
-  setupComms();
+  setupCommsHMI();
   setupController();
 
   //pinMode(A0, OUTPUT);

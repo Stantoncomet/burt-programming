@@ -2,8 +2,11 @@
 
 #include "pinsMapROV.h"
 #include "Arduino.h"
+#include "burtLib.h"
 
-void setupComms() {
+unsigned int Holding_Regs_ROV[HOLDING_REGS_SIZE];
+
+void setupCommsROV() {
     pinMode(TX_ENABLE, OUTPUT);
     digitalWrite(TX_ENABLE, LOW);
 }
@@ -17,7 +20,7 @@ void ROVCommunications() {
   
   digitalWrite(TX_ENABLE, LOW);  // Enable read, by disabling Tx
   
-  if (Serial1.available() > 0) { 
+  if (Serial.available() > 0) { 
      delay(20);    // data takes 7.2 ms at 9600 baud, (from scope) 
     // wait for all data to be loaded. or use an endstring char like a ";"
     for (i = 0; i < ROV_COMM_BUFF ; i++)    //first clear out the buffer
@@ -28,8 +31,8 @@ void ROVCommunications() {
 
     // Serial.read() reads next byte in the buffer each time it's called.
     // Each time a byte is read, Serial.available() decreases by 1.
-    while (Serial1.available() > 0) { // read data into char array
-      str[i++] = Serial1.read();    // heart of the comm. read all the data and put in str buffer.
+    while (Serial.available() > 0) { // read data into char array
+      str[i++] = Serial.read();    // heart of the comm. read all the data and put in str buffer.
     }
     
     str[i] = '\0';  // make sure the last byte is null.
@@ -57,11 +60,12 @@ void ROVCommunications() {
       tempchar[j] = '\0';
       val = atoi(tempchar);
       // todo: put test that value is good 
-      Holding_Regs[index] = val; // this is the value to directly control outputs 
+      Holding_Regs_ROV[index] = val; // this is the value to directly control outputs 
      }
  
+    // Testing, print out recieved data
     Serial.print(index);
     Serial.print("  ");
-    Serial.println(Holding_Regs[index]);    
+    Serial.println(Holding_Regs_ROV[index]);    
     }
 }

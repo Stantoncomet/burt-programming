@@ -33,11 +33,11 @@ enum {
  *      use holding_regs[2], or holding_regs[THRUSTER_3], since THRUSTER_3
  *      is equivalent to 2.
 */
-static unsigned int Holding_Regs[HOLDING_REGS_SIZE];
+extern unsigned int Holding_Regs_ROV[HOLDING_REGS_SIZE];
 // HOLDING_REGS_SIZE is the largest value in enum, so it's perfect for setting the size of the array.
 
 
-void setupComms();
+void setupCommsROV();
 
 /**
  * Recieve data from HMI
