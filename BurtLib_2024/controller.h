@@ -46,12 +46,24 @@ void controllerRoutine();
 //int getStrafe();
 
 /**
- * Get joystick value
+ * Get joystick value. Limits values, applies deadband, and (by default) maps to a speed value
+ * @param joystick Joystick, 'L' or 'R'
+ * @param axis Axis, 'X' or 'Y'
+ * @param map_to_speed Default to true. If false, returns the actual value of joystick (between -32000 and 32000)
+ * @return Joystick value
 */
 int readJoystick(char joystick, char axis, bool map_to_speed = true);
 
+/**
+ * Includeds up, down and bucking
+*/
 void verticalMotors();
 
+/**
+ * Includes thrusting and turning
+*/
 void thrustMotors();
+
+void motorDisabler();
 
 #endif

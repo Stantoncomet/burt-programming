@@ -16,6 +16,6 @@ void setup() {
 
 void loop() {
   ROVCommunications(); // fetch data from control box
-  //limitMotors(); // limits running two motors maximum
-  //writeMotorSpeeds(); // set motors
+  limitMotors(); // limits running two motors maximum
+  writeMotorSpeeds(); // set motors
 }

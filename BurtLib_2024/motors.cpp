@@ -16,6 +16,15 @@ Servo Servo4;
 Servo Servo5;
 Servo Servo6;
 
+Servo Servos[] {
+    Servo1,
+    Servo2,
+    Servo3,
+    Servo4,
+    Servo5,
+    Servo6
+};
+
 
 void setupMotors() {
     // Attach servos
@@ -60,19 +69,23 @@ void limitMotors() {
 void writeMotorSpeeds() {
     static unsigned long motor_update = millis();  // last time the motors were updated.
   
-    if ((motor_update + MOTOR_UPDATE_DELAY) < millis()) { // 100 ms don't know how often this should be updated
+    if ((motor_update + MOTOR_UPDATE_DELAY) < millis()) { // 75 ms don't know how often this should be updated
         motor_update = millis();   // reset timer
         
+
+        //Servo1.writeMicroseconds(Holding_Regs_ROV[THRUSTER_1]);
+        //Serial.print(Holding_Regs_ROV[THRUSTER_1]);
+        //Serial.println(", writing to ESC 1");
         // loop over every motor
         for (int i = THRUSTER_1; i < THRUSTER_6; i++) {
             // check if speed is over the speed limit and just stop it
             if ((Holding_Regs_ROV[i] < (INIT_SERVO - SPEED_LIMIT)) || (Holding_Regs_ROV[i] > (INIT_SERVO + SPEED_LIMIT))) {
                 Holding_Regs_ROV[i] = INIT_SERVO;
-                Servo1.writeMicroseconds(Holding_Regs_ROV[i]);
+                Servos[i].writeMicroseconds(Holding_Regs_ROV[i]);
                 Serial.println(Holding_Regs_ROV[i]);
             } 
             else {
-                Servo1.writeMicroseconds(Holding_Regs_ROV[i]); // write to ESC
+                Servos[i].writeMicroseconds(Holding_Regs_ROV[i]); // write to ESC
             }
         }
         
