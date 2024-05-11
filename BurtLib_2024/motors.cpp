@@ -51,12 +51,15 @@ void setupMotors() {
     Holding_Regs_ROV[THRUSTER_4] = INIT_SERVO;
     Holding_Regs_ROV[THRUSTER_5] = INIT_SERVO;
     Holding_Regs_ROV[THRUSTER_6] = INIT_SERVO;
+
+    
 }
 
 void limitMotors() {
+    //Servo1.writeMicroseconds(1600);
     int running_motors = 0; // motors currently running
     // if theres a thruster entry that is running, then increase running motors
-    for (int i = THRUSTER_1; i < THRUSTER_6; i++) {
+    for (int i = THRUSTER_1; i <= THRUSTER_6; i++) {
         if (Holding_Regs_ROV[i] != INIT_SERVO) {
             // set any thrusters over the max runnign limit to 1500 (stop)
             if (++running_motors > MAX_MOTORS) {
@@ -77,7 +80,7 @@ void writeMotorSpeeds() {
         //Serial.print(Holding_Regs_ROV[THRUSTER_1]);
         //Serial.println(", writing to ESC 1");
         // loop over every motor
-        for (int i = THRUSTER_1; i < THRUSTER_6; i++) {
+        for (int i = THRUSTER_1; i <= THRUSTER_6; i++) {
             // check if speed is over the speed limit and just stop it
             if ((Holding_Regs_ROV[i] < (INIT_SERVO - SPEED_LIMIT)) || (Holding_Regs_ROV[i] > (INIT_SERVO + SPEED_LIMIT))) {
                 Holding_Regs_ROV[i] = INIT_SERVO;

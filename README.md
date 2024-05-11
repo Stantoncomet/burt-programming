@@ -91,6 +91,12 @@ double findMean(int val1, int val2) {
 }
 ```
 
+#### Problem Sheet
+Funky issues that have been documented incase we run into them again.
+- Controller not working? Try disconnecting it, resetting the arduino, turning it off and back on, and plugging it into the arduino.
+- Controller not working?? Make sure you don't wait for the serial to connect in the code in setup. You could be waiting a while if you don't plan on always being connected to a computer!
+- Controller not working??? Make sure to `delay(1)` during the loop where you read the usb data!
+
 #### Misc
 Some other things to note.
 - Always try to write numbers in their numerical form, rather than their word form.

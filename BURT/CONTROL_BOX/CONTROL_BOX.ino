@@ -13,7 +13,7 @@ void setup() {
   setupCommsHMI();
   setupController();
 
-  //pinMode(A0, OUTPUT);
+  
 
 }
 
@@ -21,4 +21,5 @@ void setup() {
 void loop() {
   controllerRoutine(); // Reads and sets all inputs to variables
   updateROVData(); // Communication to ROV
+
 }

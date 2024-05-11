@@ -16,7 +16,7 @@ XBOXONE Xbox(&Usb);
 
 void setup() {
   Serial.begin(115200);
-  while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
+  //while (!Serial); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
   if (Usb.Init() == -1) {
     Serial.print(F("\r\nOSC did not start"));
     while (1); //halt
@@ -25,10 +25,7 @@ void setup() {
 }
 void loop() {
   Usb.Task();
-
   if (Xbox.XboxOneConnected) {
-    Xbox.setRumbleOff();
-
     if (Xbox.getAnalogHat(LeftHatX) > 7500 || Xbox.getAnalogHat(LeftHatX) < -7500 || Xbox.getAnalogHat(LeftHatY) > 7500 || Xbox.getAnalogHat(LeftHatY) < -7500 || Xbox.getAnalogHat(RightHatX) > 7500 || Xbox.getAnalogHat(RightHatX) < -7500 || Xbox.getAnalogHat(RightHatY) > 7500 || Xbox.getAnalogHat(RightHatY) < -7500) {
       if (Xbox.getAnalogHat(LeftHatX) > 7500 || Xbox.getAnalogHat(LeftHatX) < -7500) {
         Serial.print(F("LeftHatX: "));
@@ -66,6 +63,18 @@ void loop() {
       Serial.println();
     }
 
+    // Set rumble effect
+    static uint16_t oldLTValue, oldRTValue;
+    if (Xbox.getButtonPress(LT) != oldLTValue || Xbox.getButtonPress(RT) != oldRTValue) {
+      oldLTValue = Xbox.getButtonPress(LT);
+      oldRTValue = Xbox.getButtonPress(RT);
+      uint8_t leftRumble = map(oldLTValue, 0, 1023, 0, 255); // Map the trigger values into a byte
+      uint8_t rightRumble = map(oldRTValue, 0, 1023, 0, 255);
+      if (leftRumble > 0 || rightRumble > 0)
+        Xbox.setRumbleOn(leftRumble, rightRumble, leftRumble, rightRumble);
+      else
+        Xbox.setRumbleOff();
+    }
 
     if (Xbox.getButtonClick(UP))
       Serial.println(F("Up"));
