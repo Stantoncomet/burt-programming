@@ -6,10 +6,6 @@ To use the library containing almost all of our code, you must copy the entire `
 
 ## Progress
 **Todo**
-- Fix writing to motors (write to EVERY servo)
-
-- Implement motor limiting
-
 - Write doc on how to use BurtLib_2024
 
 **Doing**
@@ -18,6 +14,8 @@ To use the library containing almost all of our code, you must copy the entire `
 - *having a GREAT time
 
 **Finished**
+- Fix writing to motors (write to EVERY servo)
+- Implement motor limiting
 - writing to motors
 - Test everything I've added (It works!!!)
 - Hopefully fixed controller issues
