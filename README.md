@@ -51,6 +51,8 @@ For power and complexity reasons, for now we are not implementing any sort of an
 - [Tinker Controller](https://github.com/nathanRamaNoodles/Tinker-Controller)
 
 ## Code Formatting Guide
+Take everything below with a grain of salt! It was likely very late at night when this was written.
+
 To keep things at least semi-organized, please follow these standards when writing any code that will end up a part of Burt. If you have any suggestions, feel free to bring it up and we'll talk about it!
 
 Here are the types of naming conventions used in programming:
