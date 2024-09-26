@@ -91,16 +91,18 @@ double findMean(int val1, int val2) {
 }
 ```
 
-#### Problem Sheet
-Funky issues that have been documented incase we run into them again.
-- Controller not working? Try disconnecting it, resetting the arduino, turning it off and back on, and plugging it into the arduino.
-- Controller not working?? Make sure you don't wait for the serial to connect in the code in setup. You could be waiting a while if you don't plan on always being connected to a computer!
-- Controller not working??? Make sure to `delay(1)` during the loop where you read the usb data!
-
 #### Misc
 Some other things to note.
 - Always try to write numbers in their numerical form, rather than their word form.
 - When commenting on a chunk of code, put the comment *above* the code. When commenting on just a line, like setting a variable, you can write the comment in-line. Or do whatever feels right, as long as it's clear.
 
 ## Misc
-- https://projecthub.arduino.cc/Arduino_Scuola/joystick-controlled-rc-car-338a83 (???)
+
+#### Problem Sheet
+Funky issues that have been documented incase we run into them again.
+- Controller not working? Try disconnecting it, resetting the arduino, turning it off and back on, and plugging it into the arduino.
+- Controller not working?? Make sure you don't wait for the serial to connect in the code in setup. You could be waiting a while if you don't plan on always being connected to a computer!
+- Controller not working??? Make sure to `delay(1)` during the loop where you read the usb data!
+
+
+https://projecthub.arduino.cc/Arduino_Scuola/joystick-controlled-rc-car-338a83 (???)
