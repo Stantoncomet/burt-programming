@@ -1,0 +1,167 @@
+:PROPERTIES:
+:ID:       41f43e6d-2cae-413a-8210-d2e1fedf8a81
+:END:
+#+title: Git
+#+description: A zettel about the Git versioning system
+* Why Git?
+- Git keeps track of iterations of your project
+- Git repositories are an effective environment to collaborate with your peers
+
+* Git Operations
+** ~init~
+- Initializes a new Git *repository*
+- You usually use this once per project
+#+begin_src bash
+  git init
+#+end_src
+** ~add~
+- *Stages* files for commit
+- Very common :: You use this every time you commit to the repository
+#+begin_src bash
+  git add .
+#+end_src
+#+begin_src bash
+  git add [file]
+#+end_src
+** ~commit~
+- *Commits* staged changes to the repository
+- Arguably the most important Git operation
+
+- Commit the staged changed to the repository
+#+begin_src bash
+  git commit -m "Initial commit"
+#+end_src
+** ~clone~
+- Copies a repo from a remote to your system
+- This is how you initially download stuff
+
+- Clone a remote repo to your system using https
+#+begin_src bash
+  git clone https://github.com/Stantoncomet/burt-programming.git
+#+end_src
+
+- Clone a remote repo to your system using ssh
+#+begin_src bash
+  git clone git@github.com:Stantoncomet/burt-programming.git
+#+end_src
+** ~push~
+- Pushes changes to the remote
+- The important operation for remotes
+
+- Push to the repository's origin
+#+begin_src bash
+  git push
+#+end_src
+
+- Push to a specified origin and branch 
+#+begin_src bash
+  git push [origin] [branch]
+#+end_src
+** ~checkout~
+- Switch to another branch of the Git repository
+
+#+begin_src bash
+  git checkout [branch]
+#+end_src
+** ~fetch~
+- Clones commits from the remote without checking out
+#+begin_src bash
+  git fetch
+#+end_src
+** ~pull~
+- Clones commits from the remote and checks it out
+#+begin_src bash
+  git pull
+#+end_src
+** ~merge~
+- Creates a new commit adding the changes from one branch to another
+- Good for releases :: Merge a feature branch to main for example
+
+- Merge the specified branch into the current branch
+#+begin_src bash
+  git merge [branch]
+#+end_src
+** ~rebase~
+- Merges commits from one branch to another
+- Good for development :: Creates a linear commit history
+
+- Applies the current branch's commits to the specified branch
+#+begin_src bash
+  git rebase [branch]
+#+end_src
+** ~revert~
+- Creates a new commit undoing the changes from previous commits
+- Useful for keeping history of commits you undo
+
+- Revert to the specified commit
+#+begin_src bash
+  git revert [commit_hash]
+#+end_src
+** ~reset~
+- Undoes changes and removes commits from the commit history
+- Useful for leaks
+
+- Roll back to the specified commit and re-stage changes
+#+begin_src bash
+  git reset --soft [commit_hash]
+#+end_src
+
+- Roll back to the specified commit and don't re-stage the changes
+#+begin_src bash
+  git reset --mixed [commit_hash]
+#+end_src
+
+- Roll back to the specified commit and discard the changes entirely
+#+begin_src bash
+  git reset --hard [commit_hash]
+#+end_src
+
+* Commit Conventions
+- Keep it in the imperative mood
+- Keep it simple
+  + Be succint, write what you did and why, not how
+- Keep it to 72 characters per line
+- Keep it separated with blank lines
+  + The space between headers bodies and footers should be one blank line
+- Keep it capitalized /properly/
+  + Capitalize the first letter of the commit title
+- Keep it without periods
+  + Your *titles* should not end with periods
+- Keep it clear
+  + Reference issues and other relevant information in the footer when necessary
+
+** Conventional Commit Standards
+- For more details look at the [[https://www.conventionalcommits.org/en/v1.0.0/][Conventional Commits Website]]
+- These conventions are optional but can lead to more helpful commit messages
+- Whether or not you follow this is on a per team basis
+1) Commits *MUST* be prefixed with a type, which consists of a noun, ~feat~, ~fix~, etc., followed by the *OPTIONAL* scope, *OPTIONAL* ~!~, and *REQUIRED* terminal colon and space.
+
+2) The type ~feat~ *MUST* be used when a commit adds a new feature to your application or library.
+
+3) The type ~fix~ *MUST* be used when a commit represents a bug fix for your application.
+
+4) A scope *MAY* be provided after a type. A scope *MUST* consist of a noun describing a section of the codebase surrounded by parenthesis, e.g., ~fix(parser):~
+
+5) A description *MUST* immediately follow the colon and space after the type/scope prefix. The description is a short summary of the code changes, e.g., /fix: array parsing issue when multiple spaces were contained in string./
+
+6) A longer commit body *MAY* be provided after the short description, providing additional contextual information about the code changes. The body *MUST* begin one blank line after the description.
+
+7) A commit body is free-form and *MAY* consist of any number of newline separated paragraphs.
+
+8) One or more footers *MAY* be provided one blank line after the body. Each footer *MUST* consist of a word token, followed by either a ~:<space>~ or ~<space>#~ separator, followed by a string value (this is inspired by the git trailer convention).
+
+9) A footer’s token *MUST* use ~-~ in place of whitespace characters, e.g., ~Acked-by~ (this helps differentiate the footer section from a multi-paragraph body). An exception is made for ~BREAKING CHANGE~, which *MAY* also be used as a token.
+
+10) A footer’s value *MAY* contain spaces and newlines, and parsing *MUST* terminate when the next valid footer token/separator pair is observed.
+
+11) Breaking changes *MUST* be indicated in the type/scope prefix of a commit, or as an entry in the footer.
+
+12) If included as a footer, a breaking change *MUST* consist of the uppercase text *BREAKING CHANGE*, followed by a colon, space, and description, e.g., /BREAKING CHANGE: environment variables now take precedence over config files./
+
+13) If included in the type/scope prefix, breaking changes *MUST* be indicated by a ~!~ immediately before the ~:~. If ~!~ is used, ~BREAKING CHANGE:~ *MAY* be omitted from the footer section, and the commit description *SHALL* be used to describe the breaking change.
+
+14) Types other than ~feat~ and ~fix~ *MAY* be used in your commit messages, e.g., /docs: update ref docs./
+
+15) The units of information that make up Conventional Commits *MUST NOT* be treated as case sensitive by implementors, with the exception of *BREAKING CHANGE* which *MUST* be uppercase.
+
+16) *BREAKING-CHANGE* *MUST* be synonymous with *BREAKING CHANGE*, when used as a token in a footer.
