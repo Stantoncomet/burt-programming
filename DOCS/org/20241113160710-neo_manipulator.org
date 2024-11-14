@@ -1,0 +1,125 @@
+:PROPERTIES:
+:ID:       b39738bf-0111-471e-8fa2-48284313c07d
+:END:
+#+title: Neo Manipulator
+#+author: Connor Mika
+#+description: A zettel about Neo's Arm
+#+options: toc:nil num:nil
+#+LATEX_CLASS_OPTIONS: [13pt, a4paper]
+#+LATEX_HEADER: \usepackage[a4paper, margin=0.85in]{geometry}
+
+* Servo
+** Idea
+Use a waterproof servo with some type of mechanism that converts rotational motion to linear motion.
+** Variations
+*** Use a rack and pinion mechanism
+In this design the pinion would be connected to a high-torque servo with 180, 360, or continuous motion.
+**** Pros
+- Simple
+- Compact
+- Realistic to print with MDF
+- Semi-precise control of the arm's position
+**** Cons
+- Requires proper lubrication
+- Can be slower then other linear motion mechanisms
+- Mechanical complexity may increase with higher torque or larger rack
+- Requires careful calibration
+*** Use a worm screw mechanism
+In this design, a worm screw drives a nut that moves linearly. The worm screw can also prevent backdrive, solving the issue of stripping out servos and destroying the arm.
+**** Pros
+- High torque transmission
+- Can prevent backdriving, ensuring the arm holds its position
+- Self-locking possible
+- Suitable for high-load
+**** Cons
+- More complex design
+- Requires lubrication
+- Can still be slower compared to other linear motion mechanisms
+- Lower efficiency than lead screws
+*** Use a lead screw mechanism
+In this design, a lead screw and nut convert rotational motion to linear motion with reduced friction compared to worm screws.
+**** Pros
+- High efficiency
+- Can be faster than other linear motion mechanisms
+- High accuracy
+- Simplicity in between *rack and pinion* and *worm screw*
+**** Cons
+- May backdrive
+- Requires careful calibration
+- May wear over time
+*** Use a cable driven mechanism
+In this design, a servo or other motor is used to drive a cable that pulls the arm along a linear path.
+****  Pros
+- Lightweight
+- Compact
+- Flexible
+**** Cons
+- Wear over time
+- Limited strength
+- Potentially more complex
+- Maintenance
+  + Regular maintenance and tension adjustment are required to keep the system functional
+* Hydraulics
+** Idea
+Use hydraulic fluid to actuate a piston or cylinder that moves the arm linearly. Hydraulic systems can provide powerful force with relatively small actuators.
+*** *Pros*
+- High power-to-weight ratio
+- Precise and smooth control
+- Compact
+*** Cons
+- Complexity
+  + Requires pumps, reservoirs, and hoses
+- Leakage risk
+  + Requires sealing
+  + A leak would be catastrophic in competition
+- Weight
+  + Due to the high complexity the multitude of parts might put us into the next weight class
+* Electrical Linear Actuators
+** Idea
+Use an electrical linear actuator to drive the arm mechanism directly.
+*** Pros
+- Compact
+- Precise control
+- Simpler to program directly
+- No fluid required
+  + Unlike hydraulics or pneumatics, electric actuators don't need fluids that means less complexity and no fear of leaks
+*** Cons
+- Limited force
+- Speed
+  + Not a very big issue
+- Wear and tear
+  + Breakage is a possibility but less likely compared to fluid-based systems
+* DC Motor
+** Idea
+Use a DC motor with a gear mechanism (e.g., lead screw, rack and pinion, or belt system) to convert rotary motion into linear motion.
+*** Pros
+- Compact
+- Efficient
+- Relatively cheap
+*** Cons
+- Backdriving
+  + A brake would need to be implemented
+- Imprecise
+- Limited power
+*** Note
+All of the same pros and cons from the section on servo mechanisms apply
+* Pneumatics
+** Idea
+Use compressed air to actuate a piston or cylinder for linear motion. Pneumatic actuators are lighter than hydraulic systems and can be more responsive.
+*** Pros
+- Lightweight
+  + Lighter than hydraulic
+- Fast response
+  + Not as important as strength
+- Simplicity
+  + Compared to hydraulics
+*** Cons
+- Limited power
+  + Weaker than hydraulics
+  + Still pretty strong
+- Requires pressurized air
+  + Compressed air tanks or a compressor are required
+  + This adds complexity and weight
+- Risk of Leakage
+  + Similar to hydraulics, a leak would be catastrophic
+
