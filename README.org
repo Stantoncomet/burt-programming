@@ -1,0 +1,107 @@
+#+title: Burt Programming
+#+description: The README for the Burt Programming repo, in org format!
+
+* Preamble
+*A place designated to sharing, collaborating on, and saving code for the Blackfish Underwater Robotics Team at the Port Townsend High School.*
+
+* Using BurtLib
+To use the library containing almost all of our code, *you must copy the entire =BurtLib_2024= folder you downloaded into your =Arduino/libraries/= folder!!* It will not work any other way to my knowledge. If you have made it work a different way, please let me know!
+
+* Progress
+** TODO Goals
+- [ ] Write doc on how to use BurtLib_2024
+
+** ACTIVE Doing
+    - having a good time
+    - not gonna stop at all
+    - *having a GREAT time
+
+** COMPLETED Finished
+- Fix writing to motors (write to EVERY servo)
+- Implement motor limiting
+- writing to motors
+- Test everything I've added (It works!!!)
+- Hopefully fixed controller issues
+- Send correct data
+- Send data over long distance using chip thing
+- Get controller input to send data to 2nd Arduino using MAX485 chip
+- Send data between Arduinos
+- Add proper controller deadbands and tollerances
+- Tollerances actually work now
+- BONUS! Controller works without batteries now (hoping it fixes various connection issues)
+- Get BurtLib_2024 working right
+- Get controller working with library system
+
+* Info
+** Thruster Info
+For power and complexity reasons, for now we are not implementing any sort of angled movement. ROV can drive straight in any of six directions on its axis (forward, back, left, right, up, and down), no translations, etc.
+
+- [[https://www.arduino.cc/reference/en/libraries/servo/][Servo Library]]
+- [[https://bluerobotics.com/learn/controlling-basic-esc-with-the-arduino-serial-monitor/][Arduino x ESC]]
+- [[https://bluerobotics.com/store/thrusters/t100-t200-thrusters/t200-thruster-r2-rp/#tab-technical-details][T100/200 Details]]
+
+** Spec Sheets
+- [[https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf][Arduino Uno]]
+
+** Libraries
+*** Using
+- [[https://github.com/adafruit/RadioHead][Radiohead Wireless Tranciever]]
+- [[https://github.com/felis/USB_Host_Shield_2.0][USB Host Shield 2.0]]
+  + Supports Xbox, Play Station
+
+*** Not Using
+- [[https://github.com/sparkfun/RFM69HCW_Breakout][Sparkfun Wireless Tranciever]]
+- [[https://github.com/nathanRamaNoodles/Tinker-Controller][Tinker Controller]]
+
+** ACTIVE Code Formatting Guide
+Take everything below with a grain of salt! It was likely very late at night when this was written.
+
+To keep things at least semi-organized, please follow these standards when writing any code that will end up a part of Burt. If you have any suggestions, feel free to bring it up and we'll talk about it!
+
+Here are the types of casing conventions used in programming:
+- ~snake_case~ :: Common for *Variables*
+- ~Formal_Snake_Case~ :: We use this for *Global Variables*
+- ~SCREAMING_SNAKE_CASE~ :: Common for *CONSTANTS*
+- ~camelCase~ :: Other ways of writing *Variables*, more common for filenames in C++
+- ~PascalCase~ :: Common for ~structs~
+- ~kebab-case~ :: Never use this
+
+Notice how each word is separated, either with an underscore, hyphen, or capital letter. If your name is really long or commonly shortened, like Human Machine Interface, or Remotely Operated Vehicle, you can use an acronym. Try to follow these cases, unless you have a good reason not to.
+
+*** Naming Files
+Use ~SCREAMING_SNAKE_CASE~ when naming ~.ino~ files.
+
+Use ~camelCase~ when naming ~.cpp~, ~.h~, or any types of files.
+
+*** Naming Variables and Functions
+- Normal variables are named with ~snake_case~.
+- Global variables, such as those defined in headers, are named with ~Formal_Snake_Case~.
+- *Preprocessor constants* (or ~#define~ statements) and *constant* variables are named with ~SCREAMING_SNAKE_CASE~.
+- ~structs~ are named with ~PascalCase~.
+- Functions follow the ~camelCase~ convention. Also, please put the open bracket on the same line as the function definition. :: This varies from codebase to codebase
+
+*** Writing Comments
+ Please write comments, but write them cleanly if you can! Here's an example.
+#+begin_src cpp
+/*
+ * Returns the average of two integers.
+*/
+double findMean(int val1, int val2) {
+  double mean = (val1 + val2) / 2; // Calculate sum of the two given numbers, divided by the number of given numbers.
+  return mean;
+}
+#+end_src
+
+*** Misc
+**** Some other things to note:
+- Always write numbers in their numerical form, rather than their word form.
+- When commenting on a chunk of code, try to put the comment *above* the code. When commenting on just a line, like setting a variable, you can write the comment in-line. Or do whatever feels right, as long as it's clear.
+
+**** REVIEW Problem Sheet
+Funky issues that have been documented in case we run into them again:
+- Controller not working? Try disconnecting it, resetting the Arduino, turning it off and back on, and plugging it into the Arduino.
+- Controller not working?(?) Make sure you don't wait for the serial to connect in the code in setup. You could be waiting a while if you don't plan on always being connected to a computer!
+- Controller not working?(?(?)) Make sure to ~delay(1)~ during the loop where you read the usb data!
+
+**** Links
+- [[https://projecthub.arduino.cc/Arduino_Scuola/joystick-controlled-rc-car-338a83][Joystick Controlled RC Car]]
