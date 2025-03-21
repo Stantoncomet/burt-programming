@@ -1,6 +1,9 @@
 # Documentation and Guides
 Here's where you can find additional guides to assist with programming for BURT.
 
+## Examples
+Examples for componets like the radio can be found [here](./EXAMPLES)
+
 ## Really Using BurtLib
 The first thing you'll probably want to do is download the latest robot code. The setup varries depending on your prefered enviornment.
 
