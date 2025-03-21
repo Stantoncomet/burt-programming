@@ -4,6 +4,8 @@ A place designated to sharing, collaborating on, and saving code for the Blackfi
 ## Using BurtLib_2024
 To use the library containing almost all of our code, you must copy the entire `BurtLib_2024` folder you downloaded into your `Arduino/libraries/` folder!! It will not work any other way to my knowledge. If you have made it work a different way, please let me know!
 
+For more information, see [Really Using BurtLib (WIP)](./DOCS/README.md#really-using-burtlib)
+
 ## Progress
 **Todo**
 - Write doc on how to use BurtLib_2024

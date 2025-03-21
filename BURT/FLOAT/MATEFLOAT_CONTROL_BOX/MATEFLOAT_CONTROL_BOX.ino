@@ -46,8 +46,10 @@ char message[20] = "1"; //message to send to begin float sequence
 
 void loop() 
 {
+  //Serial.println("running");
   if (rf69_manager.available()) //if tranciever is running
   { 
+    Serial.println("Radio On!");
     uint8_t len = sizeof(buf); //length of buffer
     if (rf69_manager.recvfromAck(buf, &len)) //if we have got a message
     { 
@@ -78,6 +80,7 @@ void loop()
       {
         
         rf69_manager.sendtoWait((uint8_t *)message, strlen(message), TO_ADDR); //sends message
+        Serial.print("button cliked      ");
       }
     }
     
@@ -85,6 +88,3 @@ void loop()
 
   lastButtonState = reading;
 }
-
-
-

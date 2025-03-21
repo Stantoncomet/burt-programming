@@ -46,7 +46,7 @@ To can wirelessly communicate between arduinos using RFM69WCH transcievers, you 
 The aqua jumper wire on the right is the antena, you (hopefully) have real wire. All connetions are necessary and must be wired properly for the radios to work. From the Adafruit hookup guide:
  - **Vin** connects to the Arduino **5V** pin. If you're using a 3.3V Arduino, connect to **3.3V**.
  - **GND** connects to Arduino ground.
- - **SCLK** connects to SPI clock. On Arduino Uno/Duemilanove/328-based, thats **Digital 13**. On Mega's, its **Digital 52** and on Leonardo/Due its **ICSP-3**.
+ - **SCK** connects to SPI clock. On Arduino Uno/Duemilanove/328-based, thats **Digital 13**. On Mega's, its **Digital 52** and on Leonardo/Due its **ICSP-3**.
  - **MISO** connects to SPI MISO. On Arduino Uno/Duemilanove/328-based, thats **Digital 12**. On Mega's, its **Digital 50** and on Leonardo/Due its **ICSP-1**.
  - **MOSI** connects to SPI MOSI. On Arduino Uno/Duemilanove/328-based, thats **Digital 11**. On Mega's, its **Digital 51** and on Leonardo/Due its **ICSP-4**.
  - **CS** connects to our SPI Chip Select pin. We'll be using **Digital 4** but you can later change this to any pin.

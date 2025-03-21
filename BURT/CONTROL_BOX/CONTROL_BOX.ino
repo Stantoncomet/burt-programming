@@ -10,7 +10,7 @@ void setup() {
   Serial.begin(115200);
   Serial1.begin(9600);
 
-  setupCommsHMI();
+  setupCommsHMI();//human-machine interface
   setupController();
 
   
@@ -20,6 +20,6 @@ void setup() {
 
 void loop() {
   controllerRoutine(); // Reads and sets all inputs to variables
-  updateROVData(); // Communication to ROV
+  updateROVData(); // Communication to RObot
 
 }

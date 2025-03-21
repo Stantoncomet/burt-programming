@@ -62,8 +62,9 @@ void controllerRoutine() {
         //Disable rumble because we want things to work properly
         Xbox.setRumbleOff();
 
-        verticalMotors();
+        
         thrustMotors();
+        verticalMotors();
 
         //debug
         /*burtLib
@@ -137,20 +138,20 @@ void verticalMotors() {
         // look at buttons lets not debounce at this time. 
         up = Xbox.getButtonPress(A);
         down = Xbox.getButtonPress(Y);
-        
-        if ((!up && !down) || (up && down)) {   // reset motor to stop. (0,0 & 1,1)
+
+        if (up == down) {   // reset motor to stop if both pressed/not pressed.
             last_speed = INIT_SERVO;  // both false; expected. both true; a problem. 
-        }
-        
-        if (up && !down) {  //go up,  
-            if(last_speed < MAX_SPEED)  // yea we can over speed by RAMP_STEP.
-                last_speed += RAMP_STEP;          
-        }
-        
-        if (!up && down) {   //go down. 
-            if(last_speed > MIN_SPEED)  // yea we can under speed by RAMP_STEP.
-                last_speed -= RAMP_STEP;          
-        }   
+        } else {
+            if (up) {  //go up,  
+                if (last_speed < MAX_SPEED)  // yea we can over speed by RAMP_STEP.
+                    last_speed += RAMP_STEP;          
+            }
+            
+            if (down) {   //go down. 
+                if (last_speed > MIN_SPEED)  // yea we can under speed by RAMP_STEP.
+                    last_speed -= RAMP_STEP;          
+            } 
+        }  
       Holding_Regs_HMI[THRUSTER_1] = Holding_Regs_HMI[THRUSTER_2] = last_speed; // update this ever RAMP_SPEED microseconds.
    }
 }

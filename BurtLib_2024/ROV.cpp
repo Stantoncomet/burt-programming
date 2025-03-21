@@ -69,3 +69,6 @@ void ROVCommunications() {
     Serial.println(Holding_Regs_ROV[index]);    
     }
 }
+void iscool(){
+    
+}
