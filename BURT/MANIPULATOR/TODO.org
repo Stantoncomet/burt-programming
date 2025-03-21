@@ -1,0 +1,14 @@
+* TODO Actuation Prototype
+DEADLINE: <2025-03-20 Thu>
+- We have no actuator! We need to build one
+  + In the making
+- [ ] Prototype Actuator
+- [ ] Final Actuator
+
+* TODO Final Grabber
+DEADLINE: <2025-03-28 Fri>
+- The current "hand" is made out of MDF
+  + Aluminum or Carbon Fiber? Maybe some plastic?
+- [ ] Choose Material
+- [ ] Design Final Grabber
+- [ ] Final Grabber
