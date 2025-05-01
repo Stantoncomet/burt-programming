@@ -21,7 +21,7 @@ void ROVCommunications() {
   digitalWrite(TX_ENABLE, LOW);  // Enable read, by disabling Tx
   
   if (Serial.available() > 0) { 
-     delay(20);    // data takes 7.2 ms at 9600 baud, (from scope) 
+     delay(50);    // data takes 7.2 ms at 9600 baud, (from scope) 
     // wait for all data to be loaded. or use an endstring char like a ";"
     for (i = 0; i < ROV_COMM_BUFF ; i++)    //first clear out the buffer
         str[i] = '\0';

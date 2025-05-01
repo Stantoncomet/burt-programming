@@ -65,6 +65,8 @@ void controllerRoutine() {
         
         thrustMotors();
         verticalMotors();
+        manip();
+
 
         //debug
         /*burtLib
@@ -200,4 +202,16 @@ void thrustMotors() {
     }
 
     
+}
+
+void manip() {
+    // This assumes LT returns the same range of values as the joysticks do (not verified to be true)
+    if (Xbox.getButtonPress(LT) > JOYSTICK_DEADBAND) {
+        int t_val = Xbox.getButtonPress(LT);
+        int SERVO_MAX = 128; // idk what the max is
+
+        //val, in_min, in_max, out_min, out_max
+        int servo_val = map(t_val, -JOYSTICK_MAX, JOYSTICK_MAX, -SERVO_MAX, SERVO_MAX);
+        // do servo stuff
+    }
 }

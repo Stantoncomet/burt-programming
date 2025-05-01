@@ -64,6 +64,8 @@ void verticalMotors();
 */
 void thrustMotors();
 
+void manip();
+
 void motorDisabler();
 
 #endif
