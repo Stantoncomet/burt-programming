@@ -34,6 +34,16 @@ void setupController();
 void controllerRoutine();
 
 /**
+ * Setup various knobs and dials on control box, like pot
+ */
+void setupKnobsNDials();
+
+/**
+ * Read various knobs and dials on the control box and update data
+ */
+void knobsNDialsRountine();
+
+/**
  * Checks if joystick is pushed forward or backward, out of deadband, and within tolerances.
  * @return Y of movement joystick if success, else `0`.
 */
@@ -64,6 +74,7 @@ void verticalMotors();
 */
 void thrustMotors();
 
-void motorDisabler();
+void manip();
+
 
 #endif

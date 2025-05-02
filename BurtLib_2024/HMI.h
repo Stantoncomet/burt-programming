@@ -13,6 +13,12 @@
 #define THRUSTER_DEADBAND 10
 
 /**
+ * Additional boost signal to counteract drag on ROV
+ * Should only be needed for forward/backward controls
+ */
+int drag_offset = 0;
+
+/**
  * We are using an enum here to give each index of the 
  *   holding_regs array an easily referencable name.
  * This is essentially like using one of these:

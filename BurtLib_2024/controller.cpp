@@ -3,6 +3,7 @@
 #include "Arduino.h"
 #include <XBOXONE.h>
 #include "controlsMap.h"
+#include "pinsMapHMI.h"
 #include "burtLib.h"
 #include "HMI.h"
 
@@ -17,6 +18,8 @@ USB Usb;
 XBOXONE Xbox(&Usb);
 
 
+// SETUP
+
 void setupController() {
     if (Usb.Init() == -1) {
         Serial.print(F("\r\nOSC did not start"));
@@ -25,35 +28,13 @@ void setupController() {
     Serial.print(F("\r\nXBOX ONE USB Library Started"));
 }
 
-// void controllerRoutine() {
+void setupKnobsNDials() {
+    // Setup potentiometer
+    pinMode(POT_PIN, OUTPUT);
+}
 
-//     static int lastMillis = millis();
+// ROUTINES
 
-//     //if (Xbox.XboxOneConnected) analogWrite(A0, 255);
-//     if (lastMillis + CONTROLLER_READ_INTERVAL < millis()) {
-//         lastMillis = millis();
-
-//         Usb.Task();
-//         if (!Xbox.XboxOneConnected) return;
-        
-//         //Disable rumble because we want things to work properly
-//         Xbox.setRumbleOff();
-
-//         /**
-//          * Movement controls
-//         */
-//         verticalMotors();
-//         thrustMotors();
-
-//         for (int i = 0; i < HOLDING_REGS_SIZE; i++) {
-//             Serial.println(Holding_Regs_HMI[i]);
-//         }
-//         Serial.println("---");
-           
-        
-        
-//     }
-// }
 void controllerRoutine() {
     Usb.Task();
 
@@ -79,6 +60,14 @@ void controllerRoutine() {
 }
 
 
+void knobsNDialsRountine() {
+    // Potentiometer
+    int pot_val = analogRead(POT_PIN);
+
+    drag_offset = map(pot_val, 0, 1023, -SPEED_LIMIT, SPEED_LIMIT);
+}
+
+// HELPERS
 
 int readJoystick(char joystick, char axis, bool map_to_speed = true) {
     int xaxis, yaxis;
@@ -117,6 +106,8 @@ int readJoystick(char joystick, char axis, bool map_to_speed = true) {
 
     return output_value;
 }
+
+// MOVEMENT
 
 void verticalMotors() {
     /* a bit wordy but we solve for all 4 combinations of 2 buttons (or inputs)
@@ -176,9 +167,15 @@ void thrustMotors() {
     }
     //If not turning, then check movement
 
+
+    // For forward/backward movement, we add an additional value to one of the thrusters
+    // to counteract the drag caused by the cables coming out of the canister
+
     // If joystick is mostly forward 
     if (yaxis > abs(xaxis)) {
-        Holding_Regs_HMI[THRUSTER_3] = Holding_Regs_HMI[THRUSTER_5] = yaxis + INIT_SERVO; //joystick reading plus init signal
+        //joystick reading plus init signal (and plus offset)
+        Holding_Regs_HMI[THRUSTER_3] = yaxis + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_5] = yaxis + INIT_SERVO + drag_offset 
         return;
     }
     // backwards
@@ -201,3 +198,17 @@ void thrustMotors() {
 
     
 }
+
+void manip() {
+    // This assumes LT returns the same range of values as the joysticks do (not verified to be true)
+    if (Xbox.getButtonPress(LT) > JOYSTICK_DEADBAND) {
+        int t_val = Xbox.getButtonPress(LT);
+        int SERVO_MAX = 128; // idk what the max is
+
+        //val, in_min, in_max, out_min, out_max
+        int servo_val = map(t_val, -JOYSTICK_MAX, JOYSTICK_MAX, -SERVO_MAX, SERVO_MAX);
+        // do servo stuff
+        //Holding_Regs_HMI[MANIP] = servo_val;
+    }
+}
+

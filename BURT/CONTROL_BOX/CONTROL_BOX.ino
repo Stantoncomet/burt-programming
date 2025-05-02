@@ -11,8 +11,9 @@ void setup() {
   Serial.begin(115200); // Serial (0) is used for the 
   Serial1.begin(9600);
 
-  setupCommsHMI();//human-machine interface
+  setupCommsHMI(); //human-machine interface
   setupController();
+  setupKnobsNDials();
   
   
 
@@ -21,6 +22,8 @@ void setup() {
 
 void loop() {
   controllerRoutine(); // Reads and sets all inputs to variables
+  knobsNDialsRoutine(); // Reads pot and updates drag offset var
   updateROVData(); // Communication to RObot
+
 
 }

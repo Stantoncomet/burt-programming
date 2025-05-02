@@ -1,2 +1,5 @@
 //MAX485 ENABLE
 #define TX_ENABLE 22
+
+//POTENTIOMETER
+#define POT_PIN A7
