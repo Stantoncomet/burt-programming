@@ -15,7 +15,7 @@ void setupCommsHMI() {
     digitalWrite(TX_ENABLE, LOW);
 }
 
-void writeToROV(int index) { // Should look like W[index]:1234\0 in the end
+void writeToROV(int index) { // Should look like Windex:1234\0 in the end
 
     char out_str[20]; // String containing the command to send to ROV
     char str[5];
@@ -33,10 +33,10 @@ void writeToROV(int index) { // Should look like W[index]:1234\0 in the end
     itoa(index, str, 10); // Turn index into a character array (a string)
     strcat(out_str, str); // Append index to the command, now says "Windex"
 
-    strcat(out_str, ":"); // Now says "W[index]:"
+    strcat(out_str, ":"); // Now says "Windex:"
     
     itoa(Holding_Regs_HMI[index], str, 10); // Turn value into a character array
-    strcat(out_str, str); // Now says "W[index]:value\0"
+    strcat(out_str, str); // Now says "Windex:value\0"
     
     digitalWrite(TX_ENABLE, HIGH);  // Enable tx to MAX485
     Serial1.print(out_str);  // Print to rov; takes about 8 ms

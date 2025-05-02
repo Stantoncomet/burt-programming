@@ -62,11 +62,8 @@ void controllerRoutine() {
         //Disable rumble because we want things to work properly
         Xbox.setRumbleOff();
 
-        
-        thrustMotors();
         verticalMotors();
-        manip();
-
+        thrustMotors();
 
         //debug
         /*burtLib
@@ -91,7 +88,7 @@ int readJoystick(char joystick, char axis, bool map_to_speed = true) {
 
     if (joystick == 'L') {
         xaxis = LeftHatX;
-        yaxis = LeftHatY;
+        yaxis = LeftHatY;   
     }
     if (joystick == 'R') {
         xaxis = RightHatX;
@@ -138,23 +135,23 @@ void verticalMotors() {
     if ((millis() - last_time) > RAMP_SPEED) { 
         last_time = millis();    // update the timer. 
         // look at buttons lets not debounce at this time. 
-        up = Xbox.getButtonPress(A);
-        down = Xbox.getButtonPress(Y);
-
-        if (up == down) {   // reset motor to stop if both pressed/not pressed.
+        up = Xbox.getButtonPress(Y);
+        down = Xbox.getButtonPress(A);
+        
+        if ((!up && !down) || (up && down)) {   // reset motor to stop. (0,0 & 1,1)
             last_speed = INIT_SERVO;  // both false; expected. both true; a problem. 
-        } else {
-            if (up) {  //go up,  
-                if (last_speed < MAX_SPEED)  // yea we can over speed by RAMP_STEP.
-                    last_speed += RAMP_STEP;          
-            }
-            
-            if (down) {   //go down. 
-                if (last_speed > MIN_SPEED)  // yea we can under speed by RAMP_STEP.
-                    last_speed -= RAMP_STEP;          
-            } 
-        }  
-      Holding_Regs_HMI[THRUSTER_1] = Holding_Regs_HMI[THRUSTER_2] = last_speed; // update this ever RAMP_SPEED microseconds.
+        }
+        
+        if (up && !down) {  //go up,  
+            if(last_speed < MAX_SPEED)  // yea we can over speed by RAMP_STEP.
+                last_speed += RAMP_STEP;          
+        }
+        
+        if (!up && down) {   //go down. 
+            if(last_speed > MIN_SPEED)  // yea we can under speed by RAMP_STEP.
+                last_speed -= RAMP_STEP;          
+        }   
+      Holding_Regs_HMI[THRUSTER_4] = Holding_Regs_HMI[THRUSTER_6] = last_speed; // update this ever RAMP_SPEED microseconds.
    }
 }
  
@@ -163,19 +160,18 @@ void thrustMotors() {
     int xaxis = readJoystick('L', 'X');  // return value of -SPEED_LIMIT, +SPEED_LIMIT
     int turn_val = readJoystick('R', 'X');
 
-    Holding_Regs_HMI[THRUSTER_3] = Holding_Regs_HMI[THRUSTER_4] = Holding_Regs_HMI[THRUSTER_5] = Holding_Regs_HMI[THRUSTER_6] = INIT_SERVO;
+    Holding_Regs_HMI[THRUSTER_1] = Holding_Regs_HMI[THRUSTER_2] = Holding_Regs_HMI[THRUSTER_3] = Holding_Regs_HMI[THRUSTER_5] = INIT_SERVO;
 
 
     // Moving stick left
     if (turn_val < 0) {
-        Holding_Regs_HMI[THRUSTER_5] = turn_val + INIT_SERVO;
-        Holding_Regs_HMI[THRUSTER_4] = -turn_val + INIT_SERVO;
+        // turn value is negative so we dont flip the sign
+        Holding_Regs_HMI[THRUSTER_1] = Holding_Regs_HMI[THRUSTER_5] = -turn_val + INIT_SERVO;
         return; //leave the function
     }
     // Moving stick right
     if (turn_val > 0) {
-        Holding_Regs_HMI[THRUSTER_3] = turn_val + INIT_SERVO;
-        Holding_Regs_HMI[THRUSTER_6] = -turn_val + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_2] = Holding_Regs_HMI[THRUSTER_3] = turn_val + INIT_SERVO;
         return; //leave the function
     }
     //If not turning, then check movement
@@ -187,31 +183,21 @@ void thrustMotors() {
     }
     // backwards
     if (yaxis < -abs(xaxis)) {
-        Holding_Regs_HMI[THRUSTER_4] = Holding_Regs_HMI[THRUSTER_6] = yaxis + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_2] = Holding_Regs_HMI[THRUSTER_1] = -yaxis + INIT_SERVO;
         return;
     }
-    // If joystick is mostly port
+    // If joystick is mostly right
     if (xaxis > abs(yaxis)) {
-        Holding_Regs_HMI[THRUSTER_3] = Holding_Regs_HMI[THRUSTER_4] = xaxis + INIT_SERVO;
+        // move motors backwards
+        Holding_Regs_HMI[THRUSTER_5] = Holding_Regs_HMI[THRUSTER_2] = -xaxis + INIT_SERVO;
         return;
     }
-    // starboard
+    // left
     if (xaxis < -abs(yaxis)) {
-        Holding_Regs_HMI[THRUSTER_5] = Holding_Regs_HMI[THRUSTER_6] = xaxis + INIT_SERVO;
+        // also move motors backwards
+        Holding_Regs_HMI[THRUSTER_3] = Holding_Regs_HMI[THRUSTER_1] = xaxis + INIT_SERVO;
         return;
     }
 
     
-}
-
-void manip() {
-    // This assumes LT returns the same range of values as the joysticks do (not verified to be true)
-    if (Xbox.getButtonPress(LT) > JOYSTICK_DEADBAND) {
-        int t_val = Xbox.getButtonPress(LT);
-        int SERVO_MAX = 128; // idk what the max is
-
-        //val, in_min, in_max, out_min, out_max
-        int servo_val = map(t_val, -JOYSTICK_MAX, JOYSTICK_MAX, -SERVO_MAX, SERVO_MAX);
-        // do servo stuff
-    }
 }
