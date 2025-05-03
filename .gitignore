@@ -1,3 +1,4 @@
 .vscode/*
 /README.org
 BURT/MANIPULATOR/upload.sh
+/BurtLib_2024/send.sh

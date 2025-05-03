@@ -41,7 +41,7 @@ void setupKnobsNDials();
 /**
  * Read various knobs and dials on the control box and update data
  */
-void knobsNDialsRountine();
+void knobsNDialsRoutine();
 
 /**
  * Checks if joystick is pushed forward or backward, out of deadband, and within tolerances.

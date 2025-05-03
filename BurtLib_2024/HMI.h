@@ -16,7 +16,7 @@
  * Additional boost signal to counteract drag on ROV
  * Should only be needed for forward/backward controls
  */
-int drag_offset = 0;
+extern int drag_offset;
 
 /**
  * We are using an enum here to give each index of the 

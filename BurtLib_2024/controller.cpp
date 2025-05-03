@@ -17,6 +17,9 @@ USB Usb;
 */
 XBOXONE Xbox(&Usb);
 
+//define drag_offset again i guess?
+
+int drag_offset = 0;
 
 // SETUP
 
@@ -60,11 +63,13 @@ void controllerRoutine() {
 }
 
 
-void knobsNDialsRountine() {
+void knobsNDialsRoutine() {
+    // Percent limiter thing? idk, its so the pot output isn't super sensative and turning a little bit wont full-power the thrusters
+    int max_percent = 0.5; // max pot turn is +50% of max power
     // Potentiometer
     int pot_val = analogRead(POT_PIN);
 
-    drag_offset = map(pot_val, 0, 1023, -SPEED_LIMIT, SPEED_LIMIT);
+    drag_offset = map(pot_val, 0, 1023, -SPEED_LIMIT*max_percent, SPEED_LIMIT*max_percent);
 }
 
 // HELPERS
@@ -174,13 +179,14 @@ void thrustMotors() {
     // If joystick is mostly forward 
     if (yaxis > abs(xaxis)) {
         //joystick reading plus init signal (and plus offset)
-        Holding_Regs_HMI[THRUSTER_3] = yaxis + INIT_SERVO;
-        Holding_Regs_HMI[THRUSTER_5] = yaxis + INIT_SERVO + drag_offset 
+        Holding_Regs_HMI[THRUSTER_3] = yaxis + INIT_SERVO + drag_offset;
+        Holding_Regs_HMI[THRUSTER_5] = yaxis + INIT_SERVO;
         return;
     }
     // backwards
     if (yaxis < -abs(xaxis)) {
-        Holding_Regs_HMI[THRUSTER_2] = Holding_Regs_HMI[THRUSTER_1] = -yaxis + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_2] = -yaxis + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_1] = -yaxis + INIT_SERVO + drag_offset;
         return;
     }
     // If joystick is mostly right
