@@ -69,7 +69,7 @@ void knobsNDialsRoutine() {
     // Potentiometer
     int pot_val = analogRead(POT_PIN);
 
-    drag_offset = map(pot_val, 0, 1023, -SPEED_LIMIT*max_percent, SPEED_LIMIT*max_percent);
+    drag_offset = map(pot_val, 0, 1023, 0, SPEED_LIMIT*max_percent);
 }
 
 // HELPERS
@@ -179,14 +179,14 @@ void thrustMotors() {
     // If joystick is mostly forward 
     if (yaxis > abs(xaxis)) {
         //joystick reading plus init signal (and plus offset)
-        Holding_Regs_HMI[THRUSTER_3] = yaxis + INIT_SERVO + drag_offset;
+        Holding_Regs_HMI[THRUSTER_3] = yaxis + drag_offset + INIT_SERVO;
         Holding_Regs_HMI[THRUSTER_5] = yaxis + INIT_SERVO;
         return;
     }
     // backwards
     if (yaxis < -abs(xaxis)) {
         Holding_Regs_HMI[THRUSTER_2] = -yaxis + INIT_SERVO;
-        Holding_Regs_HMI[THRUSTER_1] = -yaxis + INIT_SERVO + drag_offset;
+        Holding_Regs_HMI[THRUSTER_1] = -yaxis - drag_offset + INIT_SERVO;
         return;
     }
     // If joystick is mostly right
