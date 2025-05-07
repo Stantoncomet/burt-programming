@@ -45,6 +45,8 @@ enum {
 extern unsigned int Holding_Regs_HMI[HOLDING_REGS_SIZE];
 // HOLDING_REGS_SIZE is the largest value in enum, so it's perfect for setting the size of the array.
 
+extern int Drag_Offset[HOLDING_REGS_SIZE];
+
 
 void setupCommsHMI();
 

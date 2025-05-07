@@ -4,9 +4,8 @@
 #include "Arduino.h"
 #include "burtLib.h"
 
-// Fixes for IntelliSense, code works fine without it, but it gives a bunch of red squiggly errors
-//HardwareSerial Serial;
-
+// define these again
+int Drag_Offset[HOLDING_REGS_SIZE];
 unsigned int Holding_Regs_HMI[HOLDING_REGS_SIZE];
 
 void setupCommsHMI() {

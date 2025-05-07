@@ -16,7 +16,15 @@ USB Usb;
  * Primary drive controller.
 */
 XBOXONE Xbox(&Usb);
+/**
+ * Setup various knobs and dials on control box, like pot
+ */
+void setupKnobsNDials();
 
+/**
+ * Read various knobs and dials on the control box and update data
+ */
+void knobsNDialsRoutine();
 // SETUP
 
 void setupController() {
@@ -49,6 +57,7 @@ void controllerRoutine() {
 
         verticalMotors();
         thrustMotors();
+        manip();
 
     }
 
