@@ -13,12 +13,6 @@
 #define THRUSTER_DEADBAND 10
 
 /**
- * Additional boost signal to counteract drag on ROV
- * Should only be needed for forward/backward controls
- */
-extern int drag_offset;
-
-/**
  * We are using an enum here to give each index of the 
  *   holding_regs array an easily referencable name.
  * This is essentially like using one of these:
@@ -28,12 +22,12 @@ extern int drag_offset;
  *   and incrimenting by 1.
 */
 enum {
-  THRUSTER_1, //VERTICAL FRONT
-  THRUSTER_2, //VERTICAL BACK
-  THRUSTER_3, //PORT BOW
-  THRUSTER_4, //PORT QUARTER
-  THRUSTER_5, //STARBOARD BOW
-  THRUSTER_6, //STARBOARD QUATER
+  THRUSTER_1, //BACK LEFT
+  THRUSTER_2, //BACK RIGHT
+  THRUSTER_3, //FRONT LEFT
+  THRUSTER_4, //BACK VERTICAL
+  THRUSTER_5, //FRONT RIGHT
+  THRUSTER_6, //FRONT VERTICAL
 
   HOLDING_REGS_SIZE
 };
@@ -50,6 +44,13 @@ enum {
 extern unsigned int Holding_Regs_HMI[HOLDING_REGS_SIZE];
 // HOLDING_REGS_SIZE is the largest value in enum, so it's perfect for setting the size of the array.
 
+
+/**
+ * Additional boost signal to counteract drag (or anything else) on ROV.
+ * Same size as Holding_Regs because even tho we only have six thrusters,
+ * we *could* give offsets to other components (like the manip) if wanted.
+ */
+extern int Drag_Offset[HOLDING_REGS_SIZE];
 
 void setupCommsHMI();
 

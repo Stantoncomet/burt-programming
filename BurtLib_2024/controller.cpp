@@ -17,10 +17,6 @@ USB Usb;
 */
 XBOXONE Xbox(&Usb);
 
-//define drag_offset again i guess?
-
-int drag_offset = 0;
-
 // SETUP
 
 void setupController() {
@@ -33,7 +29,12 @@ void setupController() {
 
 void setupKnobsNDials() {
     // Setup potentiometer
-    pinMode(POT_PIN, OUTPUT);
+    pinMode(POT_PIN_1, INPUT);
+    pinMode(POT_PIN_2, INPUT);
+    pinMode(POT_PIN_3, INPUT);
+    pinMode(POT_PIN_4, INPUT);
+    pinMode(POT_PIN_5, INPUT);
+    pinMode(POT_PIN_6, INPUT);
 }
 
 // ROUTINES
@@ -49,14 +50,6 @@ void controllerRoutine() {
         verticalMotors();
         thrustMotors();
 
-        //debug
-        /*burtLib
-        for (int i = 0; i < HOLDING_REGS_SIZE; i++) {
-            Serial.print(Holding_Regs_HMI[i]);
-            Serial.print(", ");
-        }
-        Serial.println();
-        */
     }
 
     delay(1);
@@ -64,12 +57,31 @@ void controllerRoutine() {
 
 
 void knobsNDialsRoutine() {
-    // Percent limiter thing? idk, its so the pot output isn't super sensative and turning a little bit wont full-power the thrusters
-    int max_percent = 0.5; // max pot turn is +50% of max power
-    // Potentiometer
-    int pot_val = analogRead(POT_PIN);
+    // Potentiometers for manual offsets
+    int pot_vals[6] = {
+        analogRead(POT_PIN_1),
+        analogRead(POT_PIN_2),
+        analogRead(POT_PIN_3),
+        analogRead(POT_PIN_4),
+        analogRead(POT_PIN_5),
+        analogRead(POT_PIN_6)
+    };
+    //Serial.println(pot_val);
 
-    drag_offset = map(pot_val, 0, 1023, 0, SPEED_LIMIT*max_percent);
+    //Serial.println("AOs: ");
+    for (int i = 0; i < 6; i++) {
+        Drag_Offset[i] = map(pot_vals[i], 0, 1023, 0, DRAG_OFFSET_LIMIT);
+
+        //debug
+        Serial2.print(Drag_Offset[i]);
+    }
+    //Serial.println("");
+
+    // !!! REMOVE DELAY !!!
+    //delay(100); // !!! REMOVE DELAY !!!
+    // !!! REMOVE DELAY !!!
+
+
 }
 
 // HELPERS
@@ -147,8 +159,11 @@ void verticalMotors() {
             if(last_speed > MIN_SPEED)  // yea we can under speed by RAMP_STEP.
                 last_speed -= RAMP_STEP;          
         }   
-      Holding_Regs_HMI[THRUSTER_4] = Holding_Regs_HMI[THRUSTER_6] = last_speed; // update this ever RAMP_SPEED microseconds.
-   }
+
+        // update this ever RAMP_SPEED microseconds.
+        Holding_Regs_HMI[THRUSTER_4] = Holding_Regs_HMI[THRUSTER_6] = last_speed;
+    }
+   
 }
  
 void thrustMotors() {
@@ -179,14 +194,13 @@ void thrustMotors() {
     // If joystick is mostly forward 
     if (yaxis > abs(xaxis)) {
         //joystick reading plus init signal (and plus offset)
-        Holding_Regs_HMI[THRUSTER_3] = yaxis + drag_offset + INIT_SERVO;
-        Holding_Regs_HMI[THRUSTER_5] = yaxis + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_3] = Drag_Offset[THRUSTER_3] + yaxis + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_5] = Drag_Offset[THRUSTER_5] + yaxis + INIT_SERVO;
         return;
     }
     // backwards
     if (yaxis < -abs(xaxis)) {
-        Holding_Regs_HMI[THRUSTER_2] = -yaxis + INIT_SERVO;
-        Holding_Regs_HMI[THRUSTER_1] = -yaxis - drag_offset + INIT_SERVO;
+        Holding_Regs_HMI[THRUSTER_2] = Holding_Regs_HMI[THRUSTER_1] = -yaxis + INIT_SERVO;
         return;
     }
     // If joystick is mostly right

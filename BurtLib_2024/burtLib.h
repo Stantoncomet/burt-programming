@@ -1,11 +1,24 @@
+/**
+ * This code is shared between both HMI and ROV.
+ * Keep variables that are used in both places here.
+ */
+
 #ifndef burtLib_h
 #define burtLib_h
 
 
 /**
- * Limits the top speed of motors. Actual range is between 1100 and 1900
+ * Limits the top speed of motors. Actual range is between 1100 and 1900.
+ * This doesn't account for drag offset. (Actual speed limit would be SPEED_LIMIT+DRAG_OFFSET_LIMIT)
 */
 #define SPEED_LIMIT       200
+
+/**
+ * Drag offset percent limiter thing? idk, its so the pot output isn't super sensative and
+ * turning a little bit wont full-power the thrusters.
+ * Ex. `(SPEED_LIMIT * 0.5)` means new max speed with offset is 150%
+*/
+#define DRAG_OFFSET_LIMIT (SPEED_LIMIT * 0.5)
 
 /**
  * Stop signal for thruster servos
