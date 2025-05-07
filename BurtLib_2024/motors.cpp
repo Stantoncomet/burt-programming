@@ -15,6 +15,7 @@ Servo Servo3;
 Servo Servo4;
 Servo Servo5;
 Servo Servo6;
+Servo arm;
 
 Servo Servos[] {
     Servo1,
@@ -22,7 +23,8 @@ Servo Servos[] {
     Servo3,
     Servo4,
     Servo5,
-    Servo6
+    Servo6,
+    arm
 };
 
 
@@ -34,6 +36,10 @@ void setupMotors() {
     Servo4.attach(SERVO_PIN_4);
     Servo5.attach(SERVO_PIN_5);
     Servo6.attach(SERVO_PIN_6);
+
+    // The arm is a real servo, not an ESC
+    arm.attach(ARM_PIN);
+
     // Send "stop" and initilize signal to ESCs
     Servo1.writeMicroseconds(INIT_SERVO);
     Servo2.writeMicroseconds(INIT_SERVO);
@@ -51,8 +57,6 @@ void setupMotors() {
     Holding_Regs_ROV[THRUSTER_4] = INIT_SERVO;
     Holding_Regs_ROV[THRUSTER_5] = INIT_SERVO;
     Holding_Regs_ROV[THRUSTER_6] = INIT_SERVO;
-
-    
 }
 
 void limitMotors() {
@@ -86,11 +90,14 @@ void writeMotorSpeeds() {
                 Holding_Regs_ROV[i] = INIT_SERVO;
                 Servos[i].writeMicroseconds(Holding_Regs_ROV[i]);
                 Serial.println(Holding_Regs_ROV[i]);
-            } 
+            }
             else {
                 Servos[i].writeMicroseconds(Holding_Regs_ROV[i]); // write to ESC
             }
         }
-        
     }
+}
+
+void armPosition() {
+  arm.write(Holding_Regs_ROV[ARM]);
 }

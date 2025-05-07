@@ -11,15 +11,16 @@
  *   `#define THRUSTER_1 0`
  *   `const int THRUSTER_2 = 1`
  *   But the entries, or enumerators, are automatically assigned values starting at 0
- *   and incrimenting by 1.
+ *   and incrementing by 1.
 */
 enum {
-  THRUSTER_1, //BACK LEFT
-  THRUSTER_2, //BACK RIGHT
-  THRUSTER_3, //FRONT LEFT
-  THRUSTER_4, //BACK VERTICAL
-  THRUSTER_5, //FRONT RIGHT
-  THRUSTER_6, //FRONT VERTICAL
+  THRUSTER_1, //VERTICAL FRONT
+  THRUSTER_2, //VERTICAL BACK
+  THRUSTER_3, //PORT BOW
+  THRUSTER_4, //PORT QUARTER
+  THRUSTER_5, //STARBOARD BOW
+  THRUSTER_6, //STARBOARD QUATER
+  ARM,
 
   HOLDING_REGS_SIZE
 };
