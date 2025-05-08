@@ -16,16 +16,23 @@ USB Usb;
  * Primary drive controller.
 */
 XBOXONE Xbox(&Usb);
-/**
- * Setup various knobs and dials on control box, like pot
- */
-void setupKnobsNDials();
 
-/**
- * Read various knobs and dials on the control box and update data
- */
-void knobsNDialsRoutine();
-// SETUP
+
+//// SERVO STUFF
+// CONSTANTS
+const int SERVO_MAX = 138;
+
+// VARIABLES
+long literalVal; // servo target
+long readVal; // servo target
+long last_val; // servo target
+bool locked = false; // whether or not the arm is locked in place
+bool change = false; // whether or not the RT analog input has changed
+
+int last_debounce_time = 0; // last time the debounce was triggered
+int debounce_delay = 50; // uhhh... debounce delay......;
+
+
 
 void setupController() {
     if (Usb.Init() == -1) {
@@ -57,7 +64,7 @@ void controllerRoutine() {
 
         verticalMotors();
         thrustMotors();
-        manip();
+        armMotion();
 
     }
 
@@ -82,9 +89,12 @@ void knobsNDialsRoutine() {
         Drag_Offset[i] = map(pot_vals[i], 0, 1023, 0, DRAG_OFFSET_LIMIT);
 
         //debug
-        Serial2.print(Drag_Offset[i]);
+        Serial.print(i);
+        Serial.print(":");
+        Serial.print(Drag_Offset[i]);
+        Serial.print(", ");
     }
-    //Serial.println("");
+    Serial.println("");
 
     // !!! REMOVE DELAY !!!
     //delay(100); // !!! REMOVE DELAY !!!
@@ -228,16 +238,31 @@ void thrustMotors() {
     
 }
 
-void manip() {
-    // This assumes LT returns the same range of values as the joysticks do (not verified to be true)
-    if (Xbox.getButtonPress(LT) > JOYSTICK_DEADBAND) {
-        int t_val = Xbox.getButtonPress(LT);
-        int SERVO_MAX = 128; // idk what the max is
+long updateRightTriggerMap() {
+    return map(Xbox.getButtonPress(RT), 0, 1023, 0, 137);
+}
 
-        //val, in_min, in_max, out_min, out_max
-        int servo_val = map(t_val, -JOYSTICK_MAX, JOYSTICK_MAX, -SERVO_MAX, SERVO_MAX);
-        // do servo stuff
-        //Holding_Regs_HMI[MANIP] = servo_val;
-    }
+void armMotion() {
+	if (Xbox.XboxOneConnected) {
+		literalVal = (locked == false) ? updateRightTriggerMap() : literalVal;
+
+		if (Xbox.getButtonClick(LB)) {
+			locked = !locked;
+		}
+	}
+
+	if (literalVal != last_val && change == false) {
+		last_debounce_time = millis();
+		change = true;
+	}
+
+	if ((millis() - last_debounce_time) > debounce_delay) {
+		if (last_val != literalVal) {
+			readVal = literalVal;
+			Holding_Regs_HMI[ARM] = readVal;
+		}
+		last_val = literalVal;
+		change = false;
+	}
 }
 

@@ -23,6 +23,7 @@ extern Servo Servo3;
 extern Servo Servo4;
 extern Servo Servo5;
 extern Servo Servo6;
+extern Servo arm;
 
 /**
  * Checks holding regs for any thruster values not equal to 1500.

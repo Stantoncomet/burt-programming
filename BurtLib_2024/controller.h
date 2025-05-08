@@ -22,6 +22,12 @@
 */
 #define CONTROLLER_READ_INTERVAL 10
 
+
+
+
+
+
+
 /**
  * Initialize xbox controller.
 */
@@ -75,7 +81,7 @@ void verticalMotors();
 */
 void thrustMotors();
 
-void manip();
+void armMotion();
 
 //void motorDisabler();
 
