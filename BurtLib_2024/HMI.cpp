@@ -37,6 +37,8 @@ void writeToROV(int index) { // Should look like W[index]:1234\0 in the end
     strcat(out_str, str); // Now says "W[index]:value\0"
     
     digitalWrite(TX_ENABLE, HIGH);  // Enable tx to MAX485
+    Serial1.print(out_str);  // Print to rov; takes about 8 ms
+    Serial1.flush();         // Empty xmit buffer
     digitalWrite(TX_ENABLE, LOW);
 
     //debug
