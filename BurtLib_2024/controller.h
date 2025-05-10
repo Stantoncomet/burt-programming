@@ -83,6 +83,8 @@ void thrustMotors();
 
 void armMotion();
 
+long updateRightTriggerMap();
+
 //void motorDisabler();
 
 #endif
