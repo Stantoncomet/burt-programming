@@ -99,5 +99,5 @@ void writeMotorSpeeds() {
 }
 
 void armPosition() {
-  arm.write(Holding_Regs_ROV[ARM]);
+    arm.write(Holding_Regs_ROV[ARM]);
 }

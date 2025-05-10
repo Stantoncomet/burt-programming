@@ -30,7 +30,9 @@ bool locked = false; // whether or not the arm is locked in place
 bool change = false; // whether or not the RT analog input has changed
 
 int last_debounce_time = 0; // last time the debounce was triggered
-int debounce_delay = 50; // uhhh... debounce delay......;
+int debounce_delay = 50; // uhhh... debounce delay......
+
+
 
 
 
@@ -212,7 +214,7 @@ void thrustMotors() {
 
     // If joystick is mostly forward 
     if (yaxis > abs(xaxis)) {
-        //joystick reading plus init signal (and plus offset)
+        //joystick reading plus init signal (and plus offset) 
         Holding_Regs_HMI[THRUSTER_3] = Drag_Offset[THRUSTER_3] + yaxis + INIT_SERVO;
         Holding_Regs_HMI[THRUSTER_5] = Drag_Offset[THRUSTER_5] + yaxis + INIT_SERVO;
         return;
@@ -265,4 +267,3 @@ void armMotion() {
 		change = false;
 	}
 }
-
